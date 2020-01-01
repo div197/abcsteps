@@ -1,0 +1,23 @@
+{
+  "name": "namaskar",
+  "version": "1.0.0",
+  "description": "Testing Testing How are you now!!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/div197/abcsteps.git"
+  },
+  "keywords": [
+    "abcsteps",
+    "jodhpur"
+  ],
+  "author": "ABCsteps Technologies Pvt Ltd",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/div197/abcsteps.git/issues"
+  },
+  "homepage": "https://abcsteps.com"
+}
