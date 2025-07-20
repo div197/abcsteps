@@ -29,6 +29,9 @@ export const serverEnv = createEnv({
     POLAR_ACCESS_TOKEN: z.string().optional(),
     POLAR_WEBHOOK_SECRET: z.string().optional(),
     
+    // Memory System
+    MEM0_API_KEY: z.string().optional(), // Mem0 for personalized memory
+    
     // Optional services
     ELEVENLABS_API_KEY: z.string().optional(), // For premium TTS
     

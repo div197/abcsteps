@@ -4,8 +4,10 @@ import { getUser } from '@/lib/auth-utils';
 import { serverEnv } from '@/env/server';
 import MemoryClient from 'mem0ai';
 
-// Initialize the memory client with API key
-const memoryClient = new MemoryClient({ apiKey: serverEnv.MEM0_API_KEY || '' });
+// Initialize the memory client with API key (only if available)
+const memoryClient = serverEnv.MEM0_API_KEY 
+  ? new MemoryClient({ apiKey: serverEnv.MEM0_API_KEY })
+  : null;
 
 // Define the types based on actual API responses
 export interface MemoryItem {
@@ -38,6 +40,11 @@ export async function addMemory(content: string) {
   if (!user) {
     throw new Error('Authentication required');
   }
+  
+  if (!memoryClient) {
+    console.warn('Memory functionality disabled: MEM0_API_KEY not configured');
+    return { message: 'Memory functionality disabled', success: false };
+  }
 
   try {
     const response = await memoryClient.add([{
@@ -68,6 +75,11 @@ export async function searchMemories(query: string, page = 1, pageSize = 20): Pr
 
   if (!query.trim()) {
     return { memories: [], total: 0 };
+  }
+  
+  if (!memoryClient) {
+    console.warn('Memory functionality disabled: MEM0_API_KEY not configured');
+    return { memories: [], total: 0, error: 'Memory functionality disabled' };
   }
 
   const searchFilters = {
@@ -142,6 +154,11 @@ export async function getAllMemories(page = 1, pageSize = 20): Promise<MemoryRes
   if (!user) {
     throw new Error('Authentication required');
   }
+  
+  if (!memoryClient) {
+    console.warn('Memory functionality disabled: MEM0_API_KEY not configured');
+    return { memories: [], total: 0, error: 'Memory functionality disabled' };
+  }
 
   try {
     const data = await memoryClient.getAll({
@@ -206,6 +223,11 @@ export async function deleteMemory(memoryId: string) {
 
   if (!user) {
     throw new Error('Authentication required');
+  }
+  
+  if (!memoryClient) {
+    console.warn('Memory functionality disabled: MEM0_API_KEY not configured');
+    return { message: 'Memory functionality disabled', success: false };
   }
 
   try {

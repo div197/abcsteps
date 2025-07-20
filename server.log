@@ -1,0 +1,21 @@
+
+> abcsteps-vivek@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.4.2-canary.8 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://10.0.2.136:3000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ useCache
+     · staleTimes
+     · serverActions
+     · ...
+
+ ✓ Starting...
+ ○ Compiling middleware ...
+ ✓ Compiled middleware in 880ms
+ ✓ Ready in 2.4s
+Pathname:  /
+ ○ Compiling / ...
+[?25h
