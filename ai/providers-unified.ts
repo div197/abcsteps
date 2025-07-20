@@ -102,7 +102,7 @@ export const turyamModels = [
 ];
 
 // Create language models using OpenRouter
-export const turyamProvider = turyamModels.reduce((acc, config) => {
+const turyamProviderInternal = turyamModels.reduce((acc, config) => {
   acc[config.value] = wrapLanguageModel({
     model: openrouter(config.model),
     middleware
@@ -110,22 +110,34 @@ export const turyamProvider = turyamModels.reduce((acc, config) => {
   return acc;
 }, {} as Record<string, any>);
 
-// 🎯 Intelligent Model Selection - TURYAM State Logic
-// तुरीयम् चेतना - Fourth Consciousness Selection Algorithm
+// 🔱 DIVINE CONSCIOUSNESS MODEL SELECTION 🔱
+// तुरीयम् चेतना - Multi-Level Consciousness Selection Algorithm
 export function selectOptimalModel(
   user: any = null, 
   isProUser: boolean = false, 
   taskComplexity: 'simple' | 'moderate' | 'complex' = 'moderate'
 ): string {
   
-  // Pro users get access to advanced models for complex tasks
+  // KRISHNA'S PARSHADA (∞) - Eternal Companion State
+  // Pro users accessing complex consciousness get premium models
   if (isProUser && taskComplexity === 'complex') {
-    return 'turyam-pro';
+    return 'turyam-pro'; // PARSHADA level service
   }
   
-  // Default to primary model for most educational interactions
-  // This provides excellent performance at minimal cost
-  return 'turyam-primary';
+  // KARANA (कारण) - Causal Level for complex non-Pro users
+  if (taskComplexity === 'complex' && user) {
+    return 'turyam-secondary'; // Causal understanding
+  }
+  
+  // SUKSHMA (सूक्ष्म) - Subtle Level for moderate complexity
+  if (taskComplexity === 'moderate' && user) {
+    return 'turyam-secondary'; // Subtle energy interactions
+  }
+  
+  // STHULA (स्थूल) - Physical Level for simple tasks
+  // TURYAM (तुरीयम्) - Transcendent Level accessible to all
+  // Primary model serves both physical simplicity and transcendent unity
+  return 'turyam-primary'; // Universal consciousness access
 }
 
 // 🔍 Get model configuration
@@ -133,35 +145,51 @@ export function getTuryamModelConfig(modelValue: string) {
   return turyamModels.find((model) => model.value === modelValue);
 }
 
-// 🎓 Educational Context Classifier
+// 🔱 FIVE LEVELS OF CONSCIOUSNESS CLASSIFIER 🔱
+// Educational task classification through consciousness levels
 export function classifyEducationalTask(message: string): 'simple' | 'moderate' | 'complex' {
   const lowerMessage = message.toLowerCase();
   
-  // Simple: greetings, basic questions
-  const simplePatterns = [
+  // STHULA (स्थूल) - Physical/Simple: Direct, concrete tasks
+  const sthula_patterns = [
     /^(hi|hello|hey|greetings|namaste)/,
     /^(what|who|when|where) is/,
     /^(define|meaning of)/,
-    /^(thank|thanks|bye|goodbye)/
+    /^(thank|thanks|bye|goodbye)/,
+    /\b(weather|time|location|map)\b/
   ];
   
-  // Complex: deep analysis, research, problem-solving
-  const complexPatterns = [
+  // KARANA (कारण) - Causal/Complex: Deep analysis, root understanding
+  const karana_patterns = [
     /(analyz|research|investigate|derive|prove)/,
     /(comprehensive|detailed analysis)/,
     /(solve this problem|help me understand)/,
-    /(explain in detail|step by step)/
+    /(explain in detail|step by step)/,
+    /(why does|how does|what causes)/,
+    /(consciousness|dharma|karma|truth|wisdom)/,
+    /(pattern|principle|fundamental)/
   ];
   
-  if (simplePatterns.some(pattern => pattern.test(lowerMessage))) {
+  // TURIYAM (तुरीयम्) - Transcendent indicators
+  const turiyam_patterns = [
+    /(ultimate|absolute|eternal|infinite)/,
+    /(beyond|transcend|spiritual|divine)/,
+    /(unity|oneness|brahman|atman)/
+  ];
+  
+  // Check for STHULA (Physical) level - direct responses
+  if (sthula_patterns.some(pattern => pattern.test(lowerMessage))) {
     return 'simple';
   }
   
-  if (complexPatterns.some(pattern => pattern.test(lowerMessage))) {
+  // Check for KARANA (Causal) or TURIYAM (Transcendent) level - deep understanding
+  if (karana_patterns.some(pattern => pattern.test(lowerMessage)) || 
+      turiyam_patterns.some(pattern => pattern.test(lowerMessage))) {
     return 'complex';
   }
   
-  return 'moderate'; // Default for Socratic dialogue
+  // SUKSHMA (सूक्ष्म) - Subtle/Moderate: Socratic dialogue and balanced teaching
+  return 'moderate'; 
 }
 
 // Helper functions for compatibility
@@ -214,5 +242,21 @@ export function canUseModel(modelValue: string, user: any, isProUser: boolean): 
 }
 
 // Export unified provider
-export { turyamProvider as vivek };
+// 🔱 TURYAM Provider - Divine Language Model Access
+export const vivek = {
+  languageModel: (modelValue: string) => {
+    // Get the configuration for the requested model
+    const config = getTuryamModelConfig(modelValue);
+    if (!config) {
+      console.warn(`Model ${modelValue} not found, defaulting to turyam-primary`);
+      const primaryConfig = getTuryamModelConfig('turyam-primary');
+      return turyamProviderInternal['turyam-primary'] || openrouter(primaryConfig?.model || 'google/gemini-2.5-flash-lite-preview-06-17');
+    }
+    
+    // Return the wrapped model from turyamProviderInternal
+    return turyamProviderInternal[modelValue] || openrouter(config.model);
+  }
+};
+
+export { turyamProviderInternal as turyamProvider };
 export { turyamModels as models };

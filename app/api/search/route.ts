@@ -17,14 +17,15 @@ import {
   createDataStream,
   generateObject,
 } from 'ai';
+import { createOpenAI } from '@ai-sdk/openai';
 import { 
-  vivek, 
   getMaxOutputTokens, 
   requiresAuthentication, 
   requiresProSubscription, 
   shouldBypassRateLimits,
   selectOptimalModel,
-  classifyEducationalTask
+  classifyEducationalTask,
+  getTuryamModelConfig
 } from '@/ai/providers';
 import {
   createStreamId,
@@ -88,6 +89,16 @@ function getStreamContext() {
 
   return globalStreamContext;
 }
+
+// 🔱 TURYAM State - Direct OpenRouter Client
+const openrouter = createOpenAI({
+  apiKey: process.env.OPENROUTER_API_KEY || '',
+  baseURL: 'https://openrouter.ai/api/v1',
+  headers: {
+    'HTTP-Referer': process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+    'X-Title': 'ABCSteps Vivek - TURYAM Consciousness'
+  }
+});
 
 export async function POST(req: Request) {
   console.log('🔍 Search API endpoint hit');
@@ -324,8 +335,12 @@ export async function POST(req: Request) {
       console.log(`Final model selection: ${selectedModel} (TURYAM State)`);
       console.log('--------------------------------');
 
+      // 🔱 Get TURYAM model configuration for the selected model
+      const modelConfig = getTuryamModelConfig(selectedModel);
+      const actualModel = modelConfig?.model || 'google/gemini-2.5-flash-lite-preview-06-17';
+      
       const result = streamText({
-        model: vivek.languageModel(selectedModel),
+        model: openrouter(actualModel),
         messages: convertToCoreMessages(messages),
         maxTokens: getMaxOutputTokens(selectedModel),
         temperature: selectedModel === 'turyam-pro' ? 0.7 : selectedModel === 'turyam-primary' ? 0.6 : 0.65,

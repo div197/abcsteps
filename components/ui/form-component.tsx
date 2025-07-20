@@ -735,7 +735,8 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
   );
 
   const selectedGroupData = useMemo(
-    () => visibleGroups.find((group) => group.id === selectedGroup),
+    () => visibleGroups.find((group) => group.id === selectedGroup) || 
+          (selectedGroup === 'extreme' ? searchGroups.find((group) => group.id === 'extreme') : undefined),
     [visibleGroups, selectedGroup],
   );
 
@@ -805,7 +806,7 @@ const GroupModeToggle: React.FC<GroupSelectorProps> = React.memo(({ selectedGrou
                   )}
                   {isExtreme && (
                     <>
-                      <Globe className="h-3.5 w-3.5" />
+                      <TelescopeIcon className="h-3.5 w-3.5" />
                     </>
                   )}
                 </Button>

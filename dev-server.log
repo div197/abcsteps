@@ -1,0 +1,118 @@
+
+> abcsteps-vivek@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.4.2-canary.8 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://10.0.2.136:3000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ useCache
+     · staleTimes
+     · serverActions
+     · ...
+
+ ✓ Starting...
+ ○ Compiling middleware ...
+ ✓ Compiled middleware in 746ms
+ ✓ Ready in 2.5s
+Pathname:  /
+ ○ Compiling / ...
+ ✓ Compiled / in 65.5s
+[2m2025-07-20T10:41:30.901Z[0m [33mWARN[0m [1m[Better Auth]:[0m Social provider github is missing clientId or clientSecret
+[2m2025-07-20T10:41:30.902Z[0m [33mWARN[0m [1m[Better Auth]:[0m Social provider twitter is missing clientId or clientSecret
+Pathname:  /
+ GET / 200 in 266ms
+Pathname:  /api/search
+ ○ Compiling /api/search ...
+ ✓ Compiled /api/search in 20.8s
+📁 Created monitoring logs directory
+[2m2025-07-20T10:43:11.308Z[0m [33mWARN[0m [1m[Better Auth]:[0m Social provider github is missing clientId or clientSecret
+[2m2025-07-20T10:43:11.309Z[0m [33mWARN[0m [1m[Better Auth]:[0m Social provider twitter is missing clientId or clientSecret
+🔍 Search API endpoint hit
+--------------------------------
+Location:  undefined undefined
+--------------------------------
+--------------------------------
+Messages:  [ { role: 'user', content: 'test extreme mode functionality' } ]
+--------------------------------
+⏱️  User check took: 0.01s
+User not found
+ > Resumable streams are disabled due to missing REDIS_URL
+⏱️  Config loading took: 0.00s
+⏱️  Critical checks wait took: 0.00s
+⏱️  Config wait took: 0.00s
+--------------------------------
+Messages:  [ { role: 'user', content: 'test extreme mode functionality' } ]
+--------------------------------
+Running with model:  vivek-default
+Group:  extreme
+Timezone:  UTC
+🕉️ Activating TURYAM state for educational guidance...
+🌟 TURYAM selected: turyam-primary (complexity: moderate)
+👤 User tier: Standard
+--------------------------------
+Time to reach streamText: 0.02 seconds
+Final model selection: turyam-primary (TURYAM State)
+--------------------------------
+Error:  TypeError: __TURBOPACK__imported__module__$5b$project$5d2f$ai$2f$providers$2d$unified$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__turyamProvider__as__vivek$3e$__.vivek.languageModel is not a function
+    at execute (app/api/search/route.ts:328:22)
+  326 |
+  327 |       const result = streamText({
+> 328 |         model: vivek.languageModel(selectedModel),
+      |                      ^
+  329 |         messages: convertToCoreMessages(messages),
+  330 |         maxTokens: getMaxOutputTokens(selectedModel),
+  331 |         temperature: selectedModel === 'turyam-pro' ? 0.7 : selectedModel === 'turyam-primary' ? 0.6 : 0.65,
+ POST /api/search 200 in 23684ms
+ ✓ Compiled in 600ms
+Pathname:  /api/search
+[2m2025-07-20T10:43:42.602Z[0m [33mWARN[0m [1m[Better Auth]:[0m Social provider github is missing clientId or clientSecret
+[2m2025-07-20T10:43:42.602Z[0m [33mWARN[0m [1m[Better Auth]:[0m Social provider twitter is missing clientId or clientSecret
+🔍 Search API endpoint hit
+--------------------------------
+Location:  undefined undefined
+--------------------------------
+--------------------------------
+Messages:  [
+  {
+    role: 'user',
+    content: 'test extreme mode with consciousness levels'
+  }
+]
+--------------------------------
+⏱️  User check took: 0.00s
+User not found
+ > Resumable streams are disabled due to missing REDIS_URL
+⏱️  Config loading took: 0.00s
+⏱️  Critical checks wait took: 0.00s
+⏱️  Config wait took: 0.00s
+--------------------------------
+Messages:  [
+  {
+    role: 'user',
+    content: 'test extreme mode with consciousness levels'
+  }
+]
+--------------------------------
+Running with model:  turyam-primary
+Group:  extreme
+Timezone:  UTC
+🕉️ Activating TURYAM state for educational guidance...
+🌟 TURYAM selected: turyam-primary (complexity: complex)
+👤 User tier: Standard
+--------------------------------
+Time to reach streamText: 0.01 seconds
+Final model selection: turyam-primary (TURYAM State)
+--------------------------------
+Error:  TypeError: __TURBOPACK__imported__module__$5b$project$5d2f$ai$2f$providers$2d$unified$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__turyamProvider__as__vivek$3e$__.vivek.languageModel is not a function
+    at execute (app/api/search/route.ts:328:22)
+  326 |
+  327 |       const result = streamText({
+> 328 |         model: vivek.languageModel(selectedModel),
+      |                      ^
+  329 |         messages: convertToCoreMessages(messages),
+  330 |         maxTokens: getMaxOutputTokens(selectedModel),
+  331 |         temperature: selectedModel === 'turyam-pro' ? 0.7 : selectedModel === 'turyam-primary' ? 0.6 : 0.65,
+ POST /api/search 200 in 1354ms
+[?25h

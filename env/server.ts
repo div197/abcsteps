@@ -35,6 +35,15 @@ export const serverEnv = createEnv({
     // Optional services
     ELEVENLABS_API_KEY: z.string().optional(), // For premium TTS
     
+    // Search APIs (all optional with free tiers)
+    GOOGLE_SEARCH_API_KEY: z.string().optional(), // Google Custom Search (100/day free)
+    GOOGLE_SEARCH_ENGINE_ID: z.string().optional(), // Custom Search Engine ID
+    YOUTUBE_API_KEY: z.string().optional(), // YouTube Data API (10k quota/day free)
+    
+    // CRON and automation
+    CRON_SECRET: z.string().optional(), // For scheduled tasks
+    BLOB_READ_WRITE_TOKEN: z.string().optional(), // For Vercel blob storage
+    
     // CORS Configuration
     ALLOWED_ORIGINS: z.string().optional().default('http://localhost:3000'),
   },

@@ -6,3 +6,7 @@ export { datetimeTool } from './datetime';
 export { mcpSearchTool } from './mcp-search';
 export { memoryManagerTool, enhancedMemoryManagerTool } from './memory-manager';
 export { greetingTool } from './greeting';
+// 🔍 Free Search Tools (no expensive APIs)
+export { webSearchTool } from './web-search';
+export { youtubeSearchTool } from './youtube-search';
+export { academicSearchTool } from './academic-search';
