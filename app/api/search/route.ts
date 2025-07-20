@@ -25,7 +25,7 @@ import {
   shouldBypassRateLimits,
   selectOptimalModel,
   classifyEducationalTask,
-  getTuryamModelConfig
+  getModelConfig as getTuryamModelConfig
 } from '@/ai/providers';
 import {
   createStreamId,
@@ -384,7 +384,7 @@ export async function POST(req: Request) {
           const tool = tools[toolCall.toolName as keyof typeof tools];
 
           const { object: repairedArgs } = await generateObject({
-            model: vivek.languageModel('vivek-4o-mini'),
+            model: openrouter('openai/gpt-4o-mini'),
             schema: tool.parameters,
             prompt: [
               `The model tried to call the tool "${toolCall.toolName}"` + ` with the following arguments:`,
