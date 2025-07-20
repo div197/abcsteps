@@ -1,0 +1,56 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "pnpm install --frozen-lockfile && pnpm run build",
+    "watchPatterns": [
+      "app/**",
+      "components/**",
+      "lib/**",
+      "ai/**"
+    ]
+  },
+  "deploy": {
+    "numReplicas": 2,
+    "startCommand": "pnpm start",
+    "healthcheckPath": "/api/health",
+    "healthcheckTimeout": 30,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 3,
+    "region": "us-west1"
+  },
+  "environments": {
+    "production": {
+      "numReplicas": 3,
+      "memory": "2GB",
+      "cpu": "1"
+    },
+    "staging": {
+      "numReplicas": 1,
+      "memory": "1GB",
+      "cpu": "0.5"
+    }
+  },
+  "services": [
+    {
+      "name": "postgres",
+      "image": "postgres:16",
+      "volumes": [
+        {
+          "name": "pgdata",
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      ]
+    },
+    {
+      "name": "redis",
+      "image": "redis:7-alpine",
+      "volumes": [
+        {
+          "name": "redisdata",
+          "mountPath": "/data"
+        }
+      ]
+    }
+  ]
+}

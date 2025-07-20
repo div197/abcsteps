@@ -1,0 +1,72 @@
+{
+  "version": 2,
+  "name": "abcsteps-vivek",
+  "alias": ["abcsteps.app", "www.abcsteps.app"],
+  "scope": "abcsteps",
+  "env": {
+    "NODE_ENV": "production",
+    "NEXT_PUBLIC_SITE_NAME": "ABCSteps Vivek Platform"
+  },
+  "build": {
+    "env": {
+      "NEXT_TELEMETRY_DISABLED": "1",
+      "NODE_OPTIONS": "--max-old-space-size=4096"
+    }
+  },
+  "functions": {
+    "app/api/search/route.ts": {
+      "maxDuration": 60,
+      "memory": 1024
+    },
+    "app/api/transcribe/route.ts": {
+      "maxDuration": 120,
+      "memory": 3008
+    },
+    "app/api/upload/route.ts": {
+      "maxDuration": 30,
+      "memory": 1024
+    }
+  },
+  "regions": ["iad1", "sin1", "syd1"],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/cleanup",
+      "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/backup",
+      "schedule": "0 3 * * *"
+    }
+  ]
+}

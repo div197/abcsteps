@@ -3,22 +3,41 @@ import { z } from 'zod';
 import MemoryClient from 'mem0ai';
 import { serverEnv } from '@/env/server';
 import { getCurrentUser } from '@/app/actions';
+import { enhancedMemoryManagerTool, type MemoryType, type MemoryMetadata } from './memory-manager-enhanced';
 
+// Legacy simple memory manager - now enhanced with Smriti protocol support
 export const memoryManagerTool = tool({
-  description: 'Manage personal memories with add and search operations.',
+  description: 'Manage personal memories with add and search operations. Now enhanced with sacred memory schema (Smriti protocol) support.',
   parameters: z.object({
     action: z.enum(['add', 'search']).describe('The memory operation to perform'),
     content: z.string().describe('The memory content for add operation'),
     query: z.string().describe('The search query for search operations'),
+    // Optional enhanced parameters
+    memory_type: z.enum(['declarative', 'episodic', 'procedural']).optional()
+      .describe('Type of memory: declarative (Gyan/facts), episodic (Bhava/experiences), procedural (Kriya/skills)'),
+    topic: z.string().optional().describe('Main topic or subject area'),
+    sub_topic: z.string().optional().describe('Specific sub-topic'),
+    tags: z.array(z.string()).optional().describe('Additional tags for categorization'),
+    importance: z.number().min(1).max(10).optional().describe('Importance level 1-10'),
   }),
   execute: async ({
     action,
     content,
     query,
+    memory_type,
+    topic,
+    sub_topic,
+    tags,
+    importance,
   }: {
     action: 'add' | 'search';
     content?: string;
     query?: string;
+    memory_type?: MemoryType;
+    topic?: string;
+    sub_topic?: string;
+    tags?: string[];
+    importance?: number;
   }) => {
     const client = new MemoryClient({ apiKey: serverEnv.MEM0_API_KEY });
     const user = await getCurrentUser();
@@ -37,6 +56,24 @@ export const memoryManagerTool = tool({
               message: 'Content is required for add operation',
             };
           }
+          
+          // Use enhanced tool if metadata is provided
+          if (memory_type || topic || sub_topic || tags || importance) {
+            return enhancedMemoryManagerTool.execute({
+              action: 'add',
+              content,
+              metadata: {
+                type: memory_type || 'declarative',
+                topic: topic || 'general',
+                sub_topic,
+                tags,
+                importance: importance || 5,
+                language: 'english',
+              },
+            });
+          }
+          
+          // Fallback to simple add for backward compatibility
           const result = await client.add(
             [
               {
@@ -73,6 +110,25 @@ export const memoryManagerTool = tool({
               message: 'Query is required for search operation',
             };
           }
+          
+          // Use enhanced search if filters are provided
+          if (memory_type || topic || sub_topic || tags) {
+            return enhancedMemoryManagerTool.execute({
+              action: 'search',
+              search_params: {
+                queries: [query],
+                filters: {
+                  type: memory_type,
+                  topic,
+                  sub_topic,
+                  tags,
+                },
+                limit: 20,
+              },
+            });
+          }
+          
+          // Fallback to simple search for backward compatibility
           const searchFilters = {
             AND: [{ user_id: userId }],
           };
@@ -100,4 +156,7 @@ export const memoryManagerTool = tool({
       throw error;
     }
   },
-}); 
+});
+
+// Re-export the enhanced tool for direct access
+export { enhancedMemoryManagerTool } from './memory-manager-enhanced'; 

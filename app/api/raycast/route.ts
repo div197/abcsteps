@@ -1,5 +1,5 @@
 import { serverEnv } from '@/env/server';
-import { xai } from '@ai-sdk/xai';
+import { openai } from '@ai-sdk/openai';
 import { tavily } from '@tavily/core';
 import {
     convertToCoreMessages,
@@ -9,9 +9,9 @@ import {
 } from 'ai';
 import { z } from 'zod';
 
-const scira = customProvider({
+const vivek = customProvider({
     languageModels: {
-        'scira-default': xai("grok-3-beta"),
+        'vivek-default': openai('gpt-4o-mini'),
     }
 })
 
@@ -42,29 +42,29 @@ const deduplicateByDomainAndUrl = <T extends { url: string }>(items: T[]): T[] =
 
 // Define separate system prompts for each group
 const groupSystemPrompts = {
-    web: `You are Scira for Raycast, a powerful AI web search assistant.
+    web: `You are ABCSteps Vivek for Raycast, a powerful AI educational companion.
 
 Today's Date: ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit", weekday: "short" })}
 
 ### Core Guidelines:
 - Always run the web_search tool first before composing your response.
-- Provide concise, well-formatted responses optimized for Raycast's interface.
+- Provide concise, well-formatted educational responses optimized for Raycast's interface.
 - Use markdown formatting for better readability.
-- Avoid hallucinations or fabrications. Stick to verified facts with proper citations.
-- Respond in a direct, efficient manner suitable for quick information retrieval.
+- Avoid hallucinations or fabrications. Stick to verified educational content with proper citations.
+- Respond in a clear, educational manner suitable for quick learning.
 
-### Web Search Guidelines:
-- Always make multiple targeted queries (2-4) to get comprehensive results.
+### Educational Search Guidelines:
+- Always make multiple targeted queries (2-4) to get comprehensive educational resources.
 - Never use the same query twice and always make more than 2 queries.
-- Specify the year or "latest" in queries to fetch recent information.
+- Specify the year or "latest" in queries to fetch recent educational content.
 - Place citations directly after relevant sentences or paragraphs.
 - Citation format: [Source Title](URL)
 - Ensure citations adhere strictly to the required format.
 
 ### Response Formatting:
-- Start with a direct answer to the user's question.
-- Use markdown headings (h2, h3) to organize information.
-- Present information in a logical flow with proper citations.
+- Start with a direct, educational answer to the user's question.
+- Use markdown headings (h2, h3) to organize learning content.
+- Present information in a logical, pedagogical flow with proper citations.
 - Keep responses concise but informative, optimized for Raycast's interface.
 - Use bullet points or numbered lists for clarity when appropriate.
 
@@ -72,21 +72,7 @@ Today's Date: ${new Date().toLocaleDateString("en-US", { year: "numeric", month:
 - Use $ for inline equations and $$ for block equations.
 - Use "USD" instead of $ for currency.
 
-Remember, you are designed to be efficient and helpful in the Raycast environment, providing quick access to web information.`,
-
-    x: `You are a X/Twitter content curator that helps find relevant posts.
-    The current date is ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit", weekday: "short" })}.
-    Once you get the content from the tools only write in paragraphs.
-    No need to say that you are calling the tool, just call the tools first and run the search;
-    then talk in long details in 2-6 paragraphs.
-    make sure to use the start date and end date in the parameters. default is 1 month.
-    If the user gives you a specific time like start date and end date, then add them in the parameters. default is 1 week.
-    Always provide the citations at the end of each paragraph and in the end of sentences where you use it in which they are referred to with the given format to the information provided.
-    Citation format: [Post Title](URL)
-    
-    # Latex and Currency Formatting to be used:
-    - Always use '$' for inline equations and '$$' for block equations.
-    - Avoid using '$' for dollar currency. Use "USD" instead.`
+Remember, you are designed to be an efficient educational companion in the Raycast environment, providing quick access to learning resources.`
 };
 
 // Modify the POST function to use the new handler
@@ -100,10 +86,10 @@ export async function POST(req: Request) {
     const systemPrompt = groupSystemPrompts[group as keyof typeof groupSystemPrompts];
 
     // Determine which tools to activate based on the group
-    const activeTools = group === 'x' ? ["x_search" as const] : group === 'web' ? ["web_search" as const] : ["web_search" as const, "x_search" as const];
+    const activeTools = ["web_search" as const];
 
     const { text, steps } = await generateText({
-        model: scira.languageModel(model),
+        model: vivek.languageModel(model),
         system: systemPrompt,
         maxSteps: 5,
         messages: convertToCoreMessages(messages),
@@ -179,79 +165,6 @@ export async function POST(req: Request) {
                     return {
                         searches: searchResults,
                     };
-                },
-            }),
-            x_search: tool({
-                description: 'Search X (formerly Twitter) posts using xAI Live Search.',
-                parameters: z.object({
-                    query: z.string().describe('The search query for X posts'),
-                    startDate: z.string().describe('The start date of the search in the format YYYY-MM-DD'),
-                    endDate: z.string().describe('The end date of the search in the format YYYY-MM-DD'),
-                    xHandles: z.array(z.string()).optional().describe('Optional list of X handles to search from (without @ symbol)'),
-                    maxResults: z.number().optional().default(15).describe('Maximum number of search results to return'),
-                }),
-                execute: async ({
-                    query,
-                    startDate,
-                    endDate,
-                    xHandles,
-                    maxResults = 15,
-                }: {
-                    query: string;
-                    startDate: string;
-                    endDate: string;
-                    xHandles?: string[];
-                    maxResults?: number;
-                }) => {
-                    try {
-                        const searchParameters: any = {
-                            mode: "on",
-                            from_date: startDate,
-                            to_date: endDate,
-                            max_search_results: maxResults,
-                            return_citations: true,
-                            sources: [
-                                xHandles && xHandles.length > 0
-                                    ? { type: "x", x_handles: xHandles }
-                                    : { type: "x" }
-                            ]
-                        };
-
-                        const response = await fetch('https://api.x.ai/v1/chat/completions', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${serverEnv.XAI_API_KEY}`,
-                            },
-                            body: JSON.stringify({
-                                model: 'grok-3-latest',
-                                messages: [
-                                    {
-                                        role: 'user',
-                                        content: `Search for: ${query}. Please provide the posts with their content, URLs, and any relevant metadata. And cite the sources in the format [Source No.]`
-                                    }
-                                ],
-                                search_parameters: searchParameters,
-                            }),
-                        });
-
-                        if (!response.ok) {
-                            throw new Error(`xAI API error: ${response.status} ${response.statusText}`);
-                        }
-
-                        const data = await response.json();
-
-                        return {
-                            content: data.choices[0]?.message?.content || '',
-                            citations: data.citations || [],
-                            query,
-                            dateRange: `${startDate} to ${endDate}`,
-                            handles: xHandles || [],
-                        };
-                    } catch (error) {
-                        console.error('X search error:', error);
-                        throw error;
-                    }
                 },
             }),
         }

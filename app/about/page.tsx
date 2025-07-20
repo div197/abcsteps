@@ -34,7 +34,6 @@ import { X } from 'lucide-react';
 import { TextLoop } from '@/components/core/text-loop';
 import { TextShimmer } from '@/components/core/text-shimmer';
 import { VercelLogo } from '@/components/logos/vercel-logo';
-import { ExaLogo } from '@/components/logos/exa-logo';
 import { ElevenLabsLogo } from '@/components/logos/elevenlabs-logo';
 import { useRouter } from 'next/navigation';
 import { GithubLogo, XLogo } from '@phosphor-icons/react';
@@ -75,7 +74,6 @@ export default function AboutPage() {
   const router = useRouter();
   const [showTermsDialog, setShowTermsDialog] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [showCryptoAlert, setShowCryptoAlert] = useState(true);
   const { data: githubStars, isLoading: isLoadingStars } = useGitHubStars();
   useEffect(() => {
     // Check if user has seen the terms
@@ -84,11 +82,6 @@ export default function AboutPage() {
       setShowTermsDialog(true);
     }
 
-    // Check if user has dismissed the crypto alert
-    const hasDismissedCryptoAlert = localStorage.getItem('hasDismissedCryptoAlert');
-    if (hasDismissedCryptoAlert) {
-      setShowCryptoAlert(false);
-    }
   }, []);
 
   const handleAcceptTerms = () => {
@@ -98,10 +91,6 @@ export default function AboutPage() {
     }
   };
 
-  const handleDismissCryptoAlert = () => {
-    setShowCryptoAlert(false);
-    localStorage.setItem('hasDismissedCryptoAlert', 'true');
-  };
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -114,28 +103,6 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Crypto Disclaimer Alert */}
-      {showCryptoAlert && (
-        <div className="sticky top-0 z-50 border-b border-border bg-amber-50 dark:bg-amber-950/20">
-          <Alert className="border-0 rounded-none bg-transparent">
-            <AlertDescription className="flex items-center justify-between py-2">
-              <div className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
-                <ShieldCheck className="h-4 w-4" />
-                <span className="text-sm font-medium">
-                  Scira is not connected to any cryptocurrency tokens or coins. We are purely an AI search engine.
-                </span>
-              </div>
-              <button
-                onClick={handleDismissCryptoAlert}
-                className="text-amber-600 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-200 transition-colors"
-                aria-label="Dismiss alert"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </AlertDescription>
-          </Alert>
-        </div>
-      )}
 
       {/* Terms Dialog */}
       <Dialog open={showTermsDialog} onOpenChange={setShowTermsDialog}>
@@ -159,7 +126,7 @@ export default function AboutPage() {
                 Terms of Service
               </h3>
               <p className="text-xs text-muted-foreground">
-                By using Scira, you agree to our Terms of Service which outline the rules for using our platform. This
+                By using ABCSteps Vivek, you agree to our Terms of Service which outline the rules for using our platform. This
                 includes guidelines on acceptable use, intellectual property rights, and limitations of liability.
               </p>
               <Link href="/terms" className="text-xs text-primary hover:underline inline-flex items-center">
@@ -211,14 +178,14 @@ export default function AboutPage() {
         <div className="container max-w-screen-xl mx-auto py-4 px-4 flex justify-between items-center">
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="/scira.png"
-              alt="Scira"
+              src="/abcsteps.png"
+              alt="ABCSteps Vivek"
               width={100}
               height={100}
               className="size-7 invert dark:invert-0"
               quality={100}
             />
-            <span className="font-normal font-be-vietnam-pro">Scira</span>
+            <span className="font-normal font-be-vietnam-pro">ABCSteps Vivek</span>
           </Link>
 
           <nav className="flex items-center gap-8">
@@ -235,7 +202,7 @@ export default function AboutPage() {
               Privacy
             </Link>
             <Link
-              href="https://git.new/scira"
+              href="https://github.com/abcsteps"
               className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
               target="_blank"
               rel="noopener noreferrer"
@@ -256,15 +223,15 @@ export default function AboutPage() {
               <Link href="/" className="inline-flex items-center gap-4 group">
                 <div className="relative">
                   <Image
-                    src="/scira.png"
-                    alt="Scira"
+                    src="/abcsteps.png"
+                    alt="ABCSteps Vivek"
                     width={100}
                     height={100}
                     className="size-16 invert dark:invert-0 transition-all duration-300 group-hover:scale-110"
                     quality={100}
                   />
                 </div>
-                <span className="text-4xl font-light tracking-tight">Scira</span>
+                <span className="text-4xl font-light tracking-tight">ABCSteps Vivek</span>
               </Link>
 
               <div className="space-y-5">
@@ -303,7 +270,7 @@ export default function AboutPage() {
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <Link
-                  href="https://git.new/scira"
+                  href="https://github.com/abcsteps"
                   className="inline-flex h-12 items-center gap-2 px-6 rounded-xl bg-foreground text-background hover:scale-105 transition-all duration-200"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -336,16 +303,16 @@ export default function AboutPage() {
               {/* OpenAlternative Badge */}
               <div className="flex justify-center">
                 <a
-                  href="https://openalternative.co/scira?utm_source=openalternative&utm_medium=badge&utm_campaign=embed&utm_content=tool-scira"
+                  href="https://openalternative.co/abcsteps?utm_source=openalternative&utm_medium=badge&utm_campaign=embed&utm_content=tool-abcsteps"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition-transform duration-300 hover:scale-110"
                 >
                   <img
-                    src="https://openalternative.co/scira/badge.svg?theme=dark&width=200&height=50"
+                    src="https://openalternative.co/abcsteps/badge.svg?theme=dark&width=200&height=50"
                     width="200"
                     height="50"
-                    alt="Scira badge"
+                    alt="ABCSteps Vivek badge"
                     loading="lazy"
                   />
                 </a>
@@ -394,7 +361,7 @@ export default function AboutPage() {
             <div className="text-center space-y-4">
               <h2 className="text-3xl font-medium tracking-tight">RAG & Search Grounding</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Scira combines RAG and search grounding to deliver accurate, up-to-date answers from reliable sources.
+                ABCSteps Vivek combines Socratic pedagogy and AI guidance to deliver transformative learning experiences through thoughtful questioning.
               </p>
             </div>
 
@@ -519,26 +486,6 @@ export default function AboutPage() {
                   <h3 className="font-semibold text-lg">Vercel AI SDK</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     Advanced AI framework powering intelligent responses
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="group relative p-12 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 flex flex-col items-center justify-center gap-8 shadow-lg hover:shadow-xl transition-all duration-300 min-h-[240px] overflow-hidden"
-                whileHover={{ y: -4, scale: 1.02 }}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative z-10 w-full flex items-center justify-center transform group-hover:scale-105 transition-transform duration-300">
-                  <ExaLogo />
-                </div>
-                <div className="relative z-10 text-center space-y-2">
-                  <h3 className="font-semibold text-lg">Exa Search</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    Real-time search grounding with reliable sources
                   </p>
                 </div>
               </motion.div>
@@ -748,7 +695,7 @@ export default function AboutPage() {
             <div className="text-center space-y-4">
               <h2 className="text-3xl font-medium tracking-tight">Built For Everyone</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Whether you need quick answers or in-depth research, Scira adapts to your needs
+                Whether you need conceptual understanding or skill development, ABCSteps Vivek adapts to your learning style
               </p>
             </div>
 
@@ -930,7 +877,7 @@ export default function AboutPage() {
                   <ul className="space-y-3">
                     <li className="flex items-center text-[15px]">
                       <div className="w-1 h-1 bg-zinc-300 dark:bg-zinc-600 rounded-full mr-4 flex-shrink-0"></div>
-                      <span className="text-zinc-700 dark:text-zinc-300">Limited daily searches (other models)</span>
+                      <span className="text-zinc-700 dark:text-zinc-300">Limited daily learning sessions (other models)</span>
                     </li>
                     <li className="flex items-center text-[15px]">
                       <div className="w-1 h-1 bg-green-500 dark:bg-green-400 rounded-full mr-4 flex-shrink-0"></div>
@@ -966,7 +913,7 @@ export default function AboutPage() {
 
                 <div className="mb-8">
                   <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-3 tracking-[-0.01em]">
-                    Scira Pro
+                    ABCSteps Vivek Pro
                   </h3>
                   <p className="text-zinc-600 dark:text-zinc-400 text-sm mb-6 leading-relaxed">
                     Everything you need for unlimited usage
@@ -1017,12 +964,12 @@ export default function AboutPage() {
                 <div className="flex-1 space-y-2 text-center sm:text-left">
                   <h3 className="font-medium text-base">Student Discount: $10 off Pro Plan</h3>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Students can get the Pro plan for just $5/month. Email zaid@scira.ai with your student ID and a
-                    brief description of how you use Scira for your studies.
+                    Students can get the Pro plan for just $5/month. Email vivek@abcsteps.com with your student ID and a
+                    brief description of how you use ABCSteps Vivek for your learning journey.
                   </p>
                   <div className="pt-1">
                     <a
-                      href="mailto:zaid@scira.ai?subject=Student%20Discount%20Request"
+                      href="mailto:vivek@abcsteps.com?subject=Student%20Discount%20Request"
                       className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-zinc-300 dark:border-zinc-700 bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800 h-9 px-4 py-2"
                     >
                       Request Student Discount
@@ -1082,14 +1029,14 @@ export default function AboutPage() {
           >
             <div className="text-center space-y-4">
               <h2 className="text-3xl font-medium tracking-tight">Frequently Asked Questions</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">Find answers to common questions about Scira</p>
+              <p className="text-muted-foreground max-w-2xl mx-auto">Find answers to common questions about ABCSteps Vivek</p>
             </div>
 
             <ProAccordion type="single" collapsible className="w-full">
               <ProAccordionItem value="item-1">
-                <ProAccordionTrigger>What is Scira?</ProAccordionTrigger>
+                <ProAccordionTrigger>What is ABCSteps Vivek?</ProAccordionTrigger>
                 <ProAccordionContent>
-                  Scira is a minimalistic open-source AI-powered search engine that uses RAG (Retrieval-Augmented
+                  ABCSteps Vivek is an AI Educational Companion that uses Socratic pedagogy and thoughtful questioning
                   Generation) and search grounding to provide accurate, up-to-date answers from reliable sources.
                 </ProAccordionContent>
               </ProAccordionItem>
@@ -1097,7 +1044,7 @@ export default function AboutPage() {
               <ProAccordionItem value="item-2">
                 <ProAccordionTrigger>What&apos;s the difference between Free and Pro plans?</ProAccordionTrigger>
                 <ProAccordionContent>
-                  The Free plan offers limited daily searches with basic AI models, while the Pro plan ($15/month)
+                  The Free plan offers limited daily learning sessions with basic AI models, while the Pro plan ($15/month)
                   provides unlimited searches, access to all AI models, PDF document analysis, and priority support.
                 </ProAccordionContent>
               </ProAccordionItem>
@@ -1106,7 +1053,7 @@ export default function AboutPage() {
                 <ProAccordionTrigger>Is there a student discount?</ProAccordionTrigger>
                 <ProAccordionContent>
                   Yes, students can get $10 off the Pro plan, bringing it down to $5/month. To apply, email
-                  zaid@scira.ai with your student verification details and a brief description of how you use Scira for
+                  divyanshu@abcsteps.com with your student verification details and a brief description of how you use ABCSteps Vivek for
                   your academic work or studies.
                 </ProAccordionContent>
               </ProAccordionItem>
@@ -1120,17 +1067,17 @@ export default function AboutPage() {
               </ProAccordionItem>
 
               <ProAccordionItem value="item-5">
-                <ProAccordionTrigger>What AI models does Scira use?</ProAccordionTrigger>
+                <ProAccordionTrigger>What AI models does ABCSteps Vivek use?</ProAccordionTrigger>
                 <ProAccordionContent>
-                  Scira uses a range of advanced AI models including Grok 3.0, Claude 3.7 Sonnet, OpenAI GPT 4o, Gemini
+                  ABCSteps Vivek uses educational-focused AI models including Claude Sonnet, OpenAI GPT, Gemini
                   2.5 Pro, and more to provide the best possible answers.
                 </ProAccordionContent>
               </ProAccordionItem>
 
               <ProAccordionItem value="item-6">
-                <ProAccordionTrigger>How does Scira ensure information accuracy?</ProAccordionTrigger>
+                <ProAccordionTrigger>How does ABCSteps Vivek ensure learning effectiveness?</ProAccordionTrigger>
                 <ProAccordionContent>
-                  Scira combines RAG technology with search grounding to retrieve information from reliable sources and
+                  ABCSteps Vivek combines Socratic questioning with personalized guidance to ensure deep understanding and
                   verify it before providing answers. Each response includes source attribution.
                 </ProAccordionContent>
               </ProAccordionItem>
@@ -1138,8 +1085,8 @@ export default function AboutPage() {
               <ProAccordionItem value="item-7">
                 <ProAccordionTrigger>How do I apply for the student discount?</ProAccordionTrigger>
                 <ProAccordionContent>
-                  Email zaid@scira.ai with a copy of your student ID or enrollment proof. In your email, include a brief
-                  description of how you use or plan to use Scira for your academic work or studies. Once verified,
+                  Email vivek@abcsteps.com with a copy of your student ID or enrollment proof. In your email, include a brief
+                  description of how you use or plan to use ABCSteps Vivek for your academic work or studies. Once verified,
                   you&apos;ll receive a special discount code for $10 off the Pro plan.
                 </ProAccordionContent>
               </ProAccordionItem>
@@ -1149,7 +1096,7 @@ export default function AboutPage() {
               <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
                 Have more questions?{' '}
                 <a
-                  href="mailto:zaid@scira.ai"
+                  href="mailto:vivek@abcsteps.com"
                   className="text-black dark:text-white hover:underline underline-offset-4 decoration-zinc-400 dark:decoration-zinc-600 transition-colors duration-200"
                 >
                   Get in touch
@@ -1165,7 +1112,7 @@ export default function AboutPage() {
         <div className="container max-w-screen-xl mx-auto py-12 px-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <Image src="/scira.png" alt="Scira" width={32} height={32} className="h-8 w-8 invert dark:invert-0" />
+              <Image src="/abcsteps.png" alt="ABCSteps Vivek" width={32} height={32} className="h-8 w-8 invert dark:invert-0" />
               <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} All rights reserved.</p>
             </div>
 
@@ -1181,7 +1128,7 @@ export default function AboutPage() {
               </Link>
               <div className="flex items-center gap-1">
                 <Link
-                  href="https://x.com/sciraai"
+                  href="https://x.com/abcstepsedu"
                   className="p-2 text-muted-foreground hover:text-foreground transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -1189,7 +1136,7 @@ export default function AboutPage() {
                   <XLogo className="h-4 w-4" />
                 </Link>
                 <Link
-                  href="https://git.new/scira"
+                  href="https://github.com/abcsteps"
                   className="p-2 text-muted-foreground hover:text-foreground transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"

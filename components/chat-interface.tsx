@@ -66,24 +66,24 @@ const ChatInterface = memo(
     const [q] = useQueryState('q', parseAsString.withDefault(''));
 
     // Use localStorage hook directly for model selection with a default
-    const [selectedModel, setSelectedModel] = useLocalStorage('scira-selected-model', 'scira-default');
-    const [selectedGroup, setSelectedGroup] = useLocalStorage<SearchGroupId>('scira-selected-group', 'web');
+    const [selectedModel, setSelectedModel] = useLocalStorage('vivek-selected-model', 'vivek-default');
+    const [selectedGroup, setSelectedGroup] = useLocalStorage<SearchGroupId>('vivek-selected-group', 'web');
     const [isCustomInstructionsEnabled, setIsCustomInstructionsEnabled] = useLocalStorage(
-      'scira-custom-instructions-enabled',
+      'vivek-custom-instructions-enabled',
       true,
     );
 
     // Get persisted values for dialog states
     const [persistedHasShownUpgradeDialog, setPersitedHasShownUpgradeDialog] = useLocalStorage(
-      'scira-upgrade-prompt-shown',
+      'vivek-upgrade-prompt-shown',
       false,
     );
     const [persistedHasShownSignInPrompt, setPersitedHasShownSignInPrompt] = useLocalStorage(
-      'scira-signin-prompt-shown',
+      'vivek-signin-prompt-shown',
       false,
     );
     const [persistedHasShownAnnouncementDialog, setPersitedHasShownAnnouncementDialog] = useLocalStorage(
-      'scira-announcement-prompt-shown',
+      'vivek-announcement-prompt-shown',
       false,
     );
 
@@ -217,7 +217,7 @@ const ChatInterface = memo(
       () => ({
         id: chatId,
         api: '/api/search',
-        experimental_throttle: selectedModel === 'scira-opus' || selectedModel === 'scira-opus-pro' ? 1000 : 100,
+        experimental_throttle: selectedModel === 'vivek-opus' || selectedModel === 'vivek-opus-pro' ? 1000 : 100,
         sendExtraMessageFields: true,
         maxSteps: 5,
         body: {
@@ -558,7 +558,7 @@ const ChatInterface = memo(
             {status === 'ready' && messages.length === 0 && (
               <div className="text-center m-0 mb-2">
                 <h1 className="text-3xl sm:text-5xl !mb-0 text-neutral-800 dark:text-neutral-100 font-be-vietnam-pro! font-light tracking-tighter">
-                  scira
+                  ABCSteps Vivek
                 </h1>
               </div>
             )}

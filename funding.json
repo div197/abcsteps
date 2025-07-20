@@ -3,24 +3,24 @@
     "entity": {
         "type": "individual",
         "role": "maintainer",
-        "name": "Zaid Mukaddam",
-        "email": "hey@zaidmukaddam.com",
+        "name": "Divyanshu - ABCSteps Foundation",
+        "email": "divyanshu@abcsteps.com",
         "phone": "",
-        "description": "I built Scira, a minimalistic open source AI Powered Search Engine.",
+        "description": "We built ABCSteps Vivek, an AI Educational Companion for transformative learning.",
         "webpageUrl": {
-            "url": "https://github.com/zaidmukaddam/scira"
+            "url": "https://github.com/abcsteps/vivek"
         }
     },
     "projects": [
         {
-            "guid": "scira",
-            "name": "Scira",
-            "description": "Scira is a minimalistic open source AI Powered Search Engine.",
+            "guid": "abcsteps-vivek",
+            "name": "ABCSteps Vivek",
+            "description": "ABCSteps Vivek is an AI Educational Companion with Socratic learning methods.",
             "webpageUrl": {
-                "url": "https://github.com/zaidmukaddam/scira"
+                "url": "https://github.com/abcsteps/vivek"
             },
             "repositoryUrl": {
-                "url": "https://github.com/zaidmukaddam/scira"
+                "url": "https://github.com/abcsteps/vivek"
             },
             "licenses": [
                 "spdx:MIT"
@@ -37,7 +37,7 @@
             {
                 "guid": "github",
                 "type": "other",
-                "address": "https://github.com/sponsors/zaidmukaddam",
+                "address": "https://github.com/sponsors/abcsteps",
                 "description": "Github Sponsor"
             },
             {
@@ -57,7 +57,7 @@
             {
                 "guid": "one-time-llm",
                 "status": "active",
-                "name": "One-time OpenAI and Anthropic Credits Donation",
+                "name": "One-time Educational AI Credits Donation",
                 "description": "One-time donation to support the project",
                 "amount": 1000,
                 "currency": "USD",
@@ -71,7 +71,7 @@
             {
                 "guid": "one-time-api",
                 "status": "active",
-                "name": "One-time API Credits Donation for Tavily AI API and Mapbox API",
+                "name": "One-time Educational Tools API Credits Donation",
                 "description": "One-time donation to support the project",
                 "amount": 500,
                 "currency": "USD",
@@ -85,7 +85,7 @@
             {
                 "guid": "monthly-llm",
                 "status": "active",
-                "name": "Monthly OpenAI and Anthropic Credits Donation",
+                "name": "Monthly Educational AI Credits Donation",
                 "description": "Monthly donation to support the project",
                 "amount": 100,
                 "currency": "USD",
@@ -99,7 +99,7 @@
             {
                 "guid": "monthly-api",
                 "status": "active",
-                "name": "Monthly API Credits Donation for Tavily AI API and Mapbox API",
+                "name": "Monthly Educational Tools API Credits Donation",
                 "description": "Monthly donation to support the project",
                 "amount": 50,
                 "currency": "USD",

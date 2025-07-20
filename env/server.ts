@@ -1,42 +1,38 @@
-// https://env.t3.gg/docs/nextjs#create-your-schema
+// Environment configuration for ABCSteps Vivek
+// Using Supabase free tier + OpenRouter + Self-hosted Mem0
 import { createEnv } from '@t3-oss/env-nextjs'
 import { z } from 'zod'
 
 export const serverEnv = createEnv({
   server: {
-    XAI_API_KEY: z.string().min(1),
-    OPENAI_API_KEY: z.string().min(1),
-    ANTHROPIC_API_KEY: z.string().min(1),
-    GROQ_API_KEY: z.string().min(1),
-    GOOGLE_GENERATIVE_AI_API_KEY: z.string().min(1),
-    DAYTONA_API_KEY: z.string().min(1),
-    DATABASE_URL: z.string().min(1),
+    // AI Provider - OpenRouter (affordable with free models available)
+    OPENROUTER_API_KEY: z.string().min(1),
+    
+    // Supabase Database (free tier: 500MB database, 2GB file storage)
+    DATABASE_URL: z.string().min(1), // Supabase PostgreSQL connection string
+    SUPABASE_URL: z.string().url().optional(), // For Supabase client features
+    SUPABASE_ANON_KEY: z.string().optional(), // Public anon key
+    
+    // Authentication
     BETTER_AUTH_SECRET: z.string().min(1),
-    GITHUB_CLIENT_ID: z.string().min(1),
-    GITHUB_CLIENT_SECRET: z.string().min(1),
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
-    TWITTER_CLIENT_ID: z.string().min(1),
-    TWITTER_CLIENT_SECRET: z.string().min(1),
-    REDIS_URL: z.string().min(1),
-    ELEVENLABS_API_KEY: z.string().min(1),
-    TAVILY_API_KEY: z.string().min(1),
-    EXA_API_KEY: z.string().min(1),
-    TMDB_API_KEY: z.string().min(1),
-    YT_ENDPOINT: z.string().min(1),
-    FIRECRAWL_API_KEY: z.string().min(1),
-    OPENWEATHER_API_KEY: z.string().min(1),
-    GOOGLE_MAPS_API_KEY: z.string().min(1),
-    MAPBOX_ACCESS_TOKEN: z.string().min(1),
-    AMADEUS_API_KEY: z.string().min(1),
-    AMADEUS_API_SECRET: z.string().min(1),
-    CRON_SECRET: z.string().min(1),
-    BLOB_READ_WRITE_TOKEN: z.string().min(1),
-    MEM0_API_KEY: z.string().min(1),
-    MEM0_ORG_ID: z.string().min(1),
-    MEM0_PROJECT_ID: z.string().min(1),
-    SMITHERY_API_KEY: z.string().min(1),
-    COINGECKO_API_KEY: z.string().min(1),
+    
+    // Optional OAuth providers
+    GITHUB_CLIENT_ID: z.string().optional(),
+    GITHUB_CLIENT_SECRET: z.string().optional(),
+    
+    // Educational Tools (all have free tiers)
+    OPENWEATHER_API_KEY: z.string().optional(), // 60 calls/min free
+    
+    // Billing (Polar for Rs 990/year subscription)
+    POLAR_ACCESS_TOKEN: z.string().optional(),
+    POLAR_WEBHOOK_SECRET: z.string().optional(),
+    
+    // Optional services
+    ELEVENLABS_API_KEY: z.string().optional(), // For premium TTS
+    
+    // CORS Configuration
     ALLOWED_ORIGINS: z.string().optional().default('http://localhost:3000'),
   },
   experimental__runtimeEnv: process.env,

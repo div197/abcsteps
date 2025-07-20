@@ -39,11 +39,11 @@ interface MessagesProps {
   isOwner?: boolean; // Add ownership prop
 }
 
-const SciraLogoHeader = () => (
+const VivekLogoHeader = () => (
   <div className="flex items-center gap-2 my-1.5">
     <Image
-      src="/scira.png"
-      alt="Scira"
+      src="/abcsteps-vivek.png"
+      alt="ABCSteps Vivek"
       className="size-7 invert dark:invert-0"
       width={100}
       height={100}
@@ -51,7 +51,7 @@ const SciraLogoHeader = () => (
       quality={100}
       priority
     />
-    <h2 className="text-xl font-normal font-be-vietnam-pro text-neutral-800 dark:text-neutral-200">Scira</h2>
+    <h2 className="text-xl font-normal font-be-vietnam-pro text-neutral-800 dark:text-neutral-200">ABCSteps Vivek</h2>
   </div>
 );
 
@@ -207,7 +207,7 @@ const Messages: React.FC<MessagesProps> = React.memo(
           if ((!part.text || part.text.trim() === '') && status === 'streaming' && !hasActiveToolInvocations) {
             return (
               <div key={`${messageIndex}-${partIndex}-loading`} className="flex flex-col min-h-[calc(100vh-18rem)]">
-                <SciraLogoHeader />
+                <VivekLogoHeader />
                 <div className="flex space-x-2 ml-8 mt-2">
                   <div
                     className="w-2 h-2 rounded-full bg-neutral-400 dark:bg-neutral-600 animate-bounce"
@@ -382,7 +382,7 @@ const Messages: React.FC<MessagesProps> = React.memo(
               // Render logo and title for the first step-start
               return (
                 <div key={`${messageIndex}-${partIndex}-step-start-logo`}>
-                  <SciraLogoHeader />
+                  <VivekLogoHeader />
                 </div>
               );
             }
@@ -514,7 +514,7 @@ const Messages: React.FC<MessagesProps> = React.memo(
         {status === 'submitted' && !hasActiveToolInvocations && (
           <div className="flex items-start min-h-[calc(100vh-18rem)]">
             <div className="w-full">
-              <SciraLogoHeader />
+              <VivekLogoHeader />
               <div className="flex space-x-2 ml-8 mt-2">
                 <div
                   className="w-2 h-2 rounded-full bg-neutral-400 dark:bg-neutral-600 animate-bounce"
@@ -537,7 +537,7 @@ const Messages: React.FC<MessagesProps> = React.memo(
         {isMissingAssistantResponse && (
           <div className="flex items-start min-h-[calc(100vh-18rem)]">
             <div className="w-full">
-              <SciraLogoHeader />
+              <VivekLogoHeader />
 
               <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-4 max-w-2xl">
                 <div className="flex items-start gap-3">

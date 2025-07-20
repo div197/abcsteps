@@ -1,23 +1,16 @@
 // /lib/utils.ts
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { Globe, Book, TelescopeIcon, DollarSign } from 'lucide-react'
-import { ChatsCircleIcon, CodeIcon, MemoryIcon, RedditLogoIcon, YoutubeLogoIcon, XLogoIcon } from '@phosphor-icons/react'
+import { Globe, Book, TelescopeIcon, GraduationCap } from 'lucide-react'
+import { ChatsCircleIcon, CodeIcon, MemoryIcon, YoutubeLogoIcon } from '@phosphor-icons/react'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export type SearchGroupId = 'web' | 'x' | 'academic' | 'youtube' | 'reddit' | 'analysis' | 'chat' | 'extreme' | 'memory' | 'crypto';
+export type SearchGroupId = 'web' | 'analysis' | 'chat' | 'memory' | 'guru';
 
 export const searchGroups = [
-  {
-    id: 'web' as const,
-    name: 'Web',
-    description: 'Search across the entire internet powered by Exa AI',
-    icon: Globe,
-    show: true,
-  },
   {
     id: 'memory' as const,
     name: 'Memory',
@@ -29,15 +22,8 @@ export const searchGroups = [
   {
     id: 'analysis' as const,
     name: 'Analysis',
-    description: 'Code, stock and currency stuff',
+    description: 'Code and data analysis',
     icon: CodeIcon,
-    show: true,
-  },
-  {
-    id: 'crypto' as const,
-    name: 'Crypto',
-    description: 'Cryptocurrency research powered by CoinGecko',
-    icon: DollarSign,
     show: true,
   },
   {
@@ -48,38 +34,17 @@ export const searchGroups = [
     show: true,
   },
   {
-    id: 'x' as const,
-    name: 'X',
-    description: 'Search X posts',
-    icon: XLogoIcon,
+    id: 'guru' as const,
+    name: 'Guru',
+    description: 'Learn through Socratic questioning',
+    icon: GraduationCap,
     show: true,
   },
   {
-    id: 'reddit' as const,
-    name: 'Reddit',
-    description: 'Search Reddit posts',
-    icon: RedditLogoIcon,
-    show: true,
-  },
-  {
-    id: 'academic' as const,
-    name: 'Academic',
-    description: 'Search academic papers powered by Exa',
-    icon: Book,
-    show: true,
-  },
-  {
-    id: 'youtube' as const,
-    name: 'YouTube',
-    description: 'Search YouTube videos powered by Exa',
-    icon: YoutubeLogoIcon,
-    show: true,
-  },
-  {
-    id: 'extreme' as const,
-    name: 'Extreme',
-    description: 'Deep research with multiple sources and analysis',
-    icon: TelescopeIcon,
+    id: 'web' as const,
+    name: 'Tools',
+    description: 'Weather, maps, translation and utilities',
+    icon: Globe,
     show: true,
   },
 ] as const;

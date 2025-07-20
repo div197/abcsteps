@@ -1,7 +1,9 @@
 version: '3.8'
 
+# 🕉️ Divine Container Orchestration
 services:
-  scira.app:
+  # 🔱 Vivek Learning Platform Container
+  abcsteps.vivek:
     build:
       context: .
       dockerfile: Dockerfile
@@ -11,4 +13,11 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - HOSTNAME=0.0.0.0
+      - NEXT_PUBLIC_SITE_NAME=ABCSteps Vivek Platform
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

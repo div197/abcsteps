@@ -229,7 +229,7 @@ const UserProfile = memo(
                           <Crown size={14} className="text-foreground" />
                         </div>
                         <div className="flex flex-col">
-                          <span className="font-medium text-foreground text-sm">Scira Pro</span>
+                          <span className="font-medium text-foreground text-sm">ABCSteps Vivek Pro</span>
                           <span className="text-[10px] text-muted-foreground">Unlimited access to all features</span>
                         </div>
                       </div>
@@ -299,7 +299,7 @@ const UserProfile = memo(
             {/* Social and External Links */}
             <DropdownMenuItem className="cursor-pointer" asChild>
               <a
-                href={'https://api.scira.ai/'}
+                href={'https://api.abcsteps.com/'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center gap-2"
@@ -310,7 +310,7 @@ const UserProfile = memo(
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" asChild>
               <a
-                href={'https://git.new/scira'}
+                href={'https://github.com/abcsteps'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center gap-2"
@@ -321,7 +321,7 @@ const UserProfile = memo(
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" asChild>
               <a
-                href={'https://x.com/sciraai'}
+                href={'https://x.com/abcstepsedu'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center gap-2"
@@ -332,7 +332,7 @@ const UserProfile = memo(
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" asChild>
               <a
-                href={'https://www.instagram.com/scira.ai'}
+                href={'https://www.instagram.com/abcstepsedu'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center gap-2"
@@ -343,7 +343,7 @@ const UserProfile = memo(
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" asChild>
               <a
-                href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fzaidmukaddam%2Fscira&env=XAI_API_KEY,OPENAI_API_KEY,ANTHROPIC_API_KEY,GROQ_API_KEY,GOOGLE_GENERATIVE_AI_API_KEY,DAYTONA_API_KEY,E2B_API_KEY,DATABASE_URL,BETTER_AUTH_SECRET,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,TWITTER_CLIENT_ID,TWITTER_CLIENT_SECRET,REDIS_URL,ELEVENLABS_API_KEY,TAVILY_API_KEY,EXA_API_KEY,TMDB_API_KEY,YT_ENDPOINT,FIRECRAWL_API_KEY,OPENWEATHER_API_KEY,SANDBOX_TEMPLATE_ID,GOOGLE_MAPS_API_KEY,MAPBOX_ACCESS_TOKEN,AVIATION_STACK_API_KEY,CRON_SECRET,BLOB_READ_WRITE_TOKEN,MEM0_API_KEY,MEM0_ORG_ID,MEM0_PROJECT_ID,SMITHERY_API_KEY,NEXT_PUBLIC_MAPBOX_TOKEN,NEXT_PUBLIC_POSTHOG_KEY,NEXT_PUBLIC_POSTHOG_HOST,NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,SCIRA_PUBLIC_API_KEY,NEXT_PUBLIC_SCIRA_PUBLIC_API_KEY&envDescription=API%20keys%20and%20configuration%20required%20for%20Scira%20to%20function"
+                href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdiv197%2Fabcsteps&env=OPENAI_API_KEY,ANTHROPIC_API_KEY,GOOGLE_GENERATIVE_AI_API_KEY,OPENROUTER_API_KEY,DAYTONA_API_KEY,DATABASE_URL,BETTER_AUTH_SECRET,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,REDIS_URL,OPENWEATHER_API_KEY,GOOGLE_MAPS_API_KEY,MAPBOX_ACCESS_TOKEN,CRON_SECRET,BLOB_READ_WRITE_TOKEN,MEM0_API_KEY,MEM0_ORG_ID,MEM0_PROJECT_ID,NEXT_PUBLIC_MAPBOX_TOKEN,NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,NEXT_PUBLIC_SITE_URL,NEXT_PUBLIC_APP_URL&envDescription=API%20keys%20and%20configuration%20required%20for%20ABCSteps%20Vivek%20to%20function"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center gap-2"
@@ -354,7 +354,7 @@ const UserProfile = memo(
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" asChild>
               <a
-                href={'https://scira.userjot.com'}
+                href={'https://abcsteps.userjot.com'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center gap-2"

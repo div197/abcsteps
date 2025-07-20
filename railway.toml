@@ -1,0 +1,18 @@
+[build]
+builder = "nixpacks"
+buildCommand = "npm install && npm run build"
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 300
+restartPolicyType = "on-failure"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "abcsteps-vivek"
+plan = "hobby"
+
+[variables]
+NODE_ENV = "production"
+NEXT_PUBLIC_SITE_NAME = "ABCSteps Vivek Platform"

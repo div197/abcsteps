@@ -215,4 +215,22 @@ export async function deleteMemory(memoryId: string) {
     console.error('Error deleting memory:', error);
     throw error;
   }
-} 
+}
+
+// Re-export enhanced memory functions for easy access
+// TODO: Uncomment when memory-actions-enhanced is properly set up
+// export {
+//   addEnhancedMemory,
+//   holisticMemorySearch,
+//   updateMemory,
+//   archiveMemory,
+//   analyzeLearningProgress,
+//   getMemoriesByType,
+//   type SmritiMetadata,
+//   type EnhancedMemoryItem,
+//   type CategorizedMemories,
+//   type EnhancedMemoryResponse,
+//   type LearningProgress,
+//   type MemoryType,
+//   type MemoryLanguage,
+// } from './memory-actions-enhanced'; 

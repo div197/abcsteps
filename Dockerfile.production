@@ -1,0 +1,107 @@
+# syntax=docker.io/docker/dockerfile:1
+
+# 🕉️ Divine Container Build - Production Grade
+# Multi-stage build for optimal size and security
+
+# Base stage with exact versions for reproducibility
+FROM node:22.12-alpine3.21 AS base
+
+# Install production dependencies only
+RUN apk add --no-cache \
+    libc6-compat \
+    ca-certificates \
+    tzdata \
+    && rm -rf /var/cache/apk/*
+
+# Set timezone
+ENV TZ=UTC
+
+# Create app directory with proper permissions
+RUN mkdir -p /app && chown -R node:node /app
+
+WORKDIR /app
+
+# Dependencies stage
+FROM base AS deps
+
+# Enable corepack for pnpm
+RUN corepack enable pnpm
+
+# Copy package files as node user
+USER node
+COPY --chown=node:node package.json pnpm-lock.yaml* ./
+
+# Install dependencies with frozen lockfile
+RUN pnpm install --frozen-lockfile --prod=false
+
+# Builder stage
+FROM base AS builder
+
+# Enable corepack for pnpm
+RUN corepack enable pnpm
+
+WORKDIR /app
+
+# Copy dependencies from deps stage
+COPY --from=deps --chown=node:node /app/node_modules ./node_modules
+
+# Copy source code
+COPY --chown=node:node . .
+
+# Build arguments for compile-time variables
+ARG NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_SITE_NAME="ABCSteps Vivek"
+
+# Set build-time environment variables
+ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+ENV NEXT_PUBLIC_SITE_NAME=${NEXT_PUBLIC_SITE_NAME}
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+
+# Build the application
+RUN pnpm run build
+
+# Production stage
+FROM base AS runner
+
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001 -G nodejs
+
+WORKDIR /app
+
+# Set production environment
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Copy only necessary files for production
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Copy custom start script
+COPY --chown=nextjs:nodejs docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Create necessary directories
+RUN mkdir -p /app/logs /app/uploads && \
+    chown -R nextjs:nodejs /app/logs /app/uploads
+
+# Switch to non-root user
+USER nextjs
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD node -e "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1); })"
+
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the application
+CMD ["/usr/local/bin/docker-entrypoint.sh"]

@@ -3,7 +3,6 @@ import {
   generateTitleFromUserMessage,
   getGroupConfig,
   getUserMessageCount,
-  getExtremeSearchUsageCount,
   getCurrentUser,
   getCustomInstructions
 } from '@/app/actions';
@@ -18,7 +17,15 @@ import {
   createDataStream,
   generateObject,
 } from 'ai';
-import { scira, getMaxOutputTokens, requiresAuthentication, requiresProSubscription, shouldBypassRateLimits } from '@/ai/providers';
+import { 
+  vivek, 
+  getMaxOutputTokens, 
+  requiresAuthentication, 
+  requiresProSubscription, 
+  shouldBypassRateLimits,
+  selectOptimalModel,
+  classifyEducationalTask
+} from '@/ai/providers';
 import {
   createStreamId,
   getChatById,
@@ -26,7 +33,6 @@ import {
   getStreamIdsByChatId,
   saveChat,
   saveMessages,
-  incrementExtremeSearchUsage,
   incrementMessageUsage,
   updateChatTitleById,
 } from '@/lib/db/queries';
@@ -38,34 +44,18 @@ import { Chat, CustomInstructions } from '@/lib/db/schema';
 import { auth } from '@/lib/auth';
 import { v4 as uuidv4 } from 'uuid';
 import { geolocation } from '@vercel/functions';
+import { recordRequest } from '../../../monitoring';
 
 // Import all tools from the organized tool files
 import {
-  stockChartTool,
-  currencyConverterTool,
-  xSearchTool,
   textTranslateTool,
-  webSearchTool,
-  movieTvSearchTool,
-  trendingMoviesTool,
-  trendingTvTool,
-  academicSearchTool,
-  youtubeSearchTool,
-  retrieveTool,
   weatherTool,
   codeInterpreterTool,
   findPlaceOnMapTool,
-  nearbyPlacesSearchTool,
-  flightTrackerTool,
-  coinDataTool,
-  coinDataByContractTool,
-  coinOhlcTool,
   datetimeTool,
   greetingTool,
   mcpSearchTool,
   memoryManagerTool,
-  redditSearchTool,
-  extremeSearchTool,
 } from '@/lib/tools';
 
 type ResponseMessageWithoutId = CoreToolMessage | CoreAssistantMessage;
@@ -125,7 +115,7 @@ export async function POST(req: Request) {
   let customInstructions: CustomInstructions | null = null;
 
   // Check if model requires authentication (fast check)
-  const authRequiredModels = ['scira-anthropic', 'scira-google'];
+  const authRequiredModels = ['vivek-anthropic', 'vivek-google'];
   if (authRequiredModels.includes(model) && !user) {
     return new ChatSDKError('unauthorized:model', `Authentication required to access ${model}`).toResponse();
   }
@@ -163,16 +153,12 @@ export async function POST(req: Request) {
             messageCount: 0, // Not relevant for pro users
             isProUser: true,
             subscriptionData: user.subscriptionData,
-            shouldBypassLimits: true,
-            extremeSearchUsage: 0 // Not relevant for pro users
+            shouldBypassLimits: true
           };
         }
 
         // Only check usage limits for non-pro users
-        const [messageCountResult, extremeSearchUsage] = await Promise.all([
-          getUserMessageCount(user), // Pass user to avoid duplicate session lookup
-          getExtremeSearchUsageCount(user), // Pass user to avoid duplicate session lookup
-        ]);
+        const messageCountResult = await getUserMessageCount(user); // Pass user to avoid duplicate session lookup
         console.log(`⏱️  Critical checks took: ${((Date.now() - criticalChecksStartTime) / 1000).toFixed(2)}s`);
 
         if (messageCountResult.error) {
@@ -195,8 +181,7 @@ export async function POST(req: Request) {
           messageCount: messageCountResult.count,
           isProUser: false,
           subscriptionData: user.subscriptionData,
-          shouldBypassLimits,
-          extremeSearchUsage: extremeSearchUsage.count
+          shouldBypassLimits
         };
       } catch (error) {
         console.error('Critical checks failed:', error);
@@ -214,8 +199,7 @@ export async function POST(req: Request) {
       messageCount: 0,
       isProUser: false,
       subscriptionData: null,
-      shouldBypassLimits: false,
-      extremeSearchUsage: 0
+      shouldBypassLimits: false
     });
   }
 
@@ -308,35 +292,43 @@ export async function POST(req: Request) {
       console.log('Group: ', group);
       console.log('Timezone: ', timezone);
 
+      // 🕉️ TURYAM State - Unified Educational Model Selection
+      let selectedModel = model;
+      
+      // Intelligent model selection based on educational context
+      if (group === 'guru' || model === 'vivek-default' || !model || model.startsWith('turyam-')) {
+        try {
+          console.log('🕉️ Activating TURYAM state for educational guidance...');
+          const lastUserMessage = messages[messages.length - 1]?.content || '';
+          const taskComplexity = classifyEducationalTask(lastUserMessage);
+          const isProUser = criticalResult.user?.isProUser || false;
+          
+          selectedModel = selectOptimalModel(criticalResult.user, isProUser, taskComplexity);
+          
+          console.log(`🌟 TURYAM selected: ${selectedModel} (complexity: ${taskComplexity})`);
+          console.log(`👤 User tier: ${isProUser ? 'Pro' : 'Standard'}`);
+        } catch (error) {
+          console.warn('⚠️ TURYAM routing failed, using primary model:', error);
+          selectedModel = 'turyam-primary'; // Safe fallback
+        }
+      } else if (selectedModel === 'vivek-default') {
+        // Always redirect default to TURYAM primary
+        selectedModel = 'turyam-primary';
+      }
+
       // Calculate time to reach streamText
       const preStreamTime = Date.now();
       const setupTime = (preStreamTime - requestStartTime) / 1000;
       console.log('--------------------------------');
       console.log(`Time to reach streamText: ${setupTime.toFixed(2)} seconds`);
+      console.log(`Final model selection: ${selectedModel} (TURYAM State)`);
       console.log('--------------------------------');
 
       const result = streamText({
-        model: scira.languageModel(model),
+        model: vivek.languageModel(selectedModel),
         messages: convertToCoreMessages(messages),
-        ...(model !== 'scira-anthropic-thinking' && model !== 'scira-opus-pro'
-          ? { maxTokens: getMaxOutputTokens(model) }
-          : {}),
-        ...(model.includes('scira-qwen-32b')
-          ? {
-            temperature: 0.6,
-            topP: 0.95,
-            topK: 20,
-            minP: 0,
-          }
-          : model.includes('scira-deepseek-v3') || model.includes('scira-qwen-30b')
-            ? {
-              temperature: 0.6,
-              topP: 1,
-              topK: 40,
-            }
-            : {
-              temperature: 0,
-            }),
+        maxTokens: getMaxOutputTokens(selectedModel),
+        temperature: selectedModel === 'turyam-pro' ? 0.7 : selectedModel === 'turyam-primary' ? 0.6 : 0.65,
         maxSteps: 5,
         maxRetries: 10,
         experimental_activeTools: [...activeTools],
@@ -344,69 +336,23 @@ export async function POST(req: Request) {
         toolChoice: 'auto',
         providerOptions: {
           openai: {
-            ...(model === 'scira-o4-mini' || model === 'scira-o3'
-              ? {
-                reasoningEffort: 'medium',
-                strictSchemas: true,
-                reasoningSummary: 'detailed',
-              }
-              : {}),
-            ...(model === 'scira-4o-mini'
-              ? {
-                parallelToolCalls: false,
-                strictSchemas: true,
-              }
-              : {}),
+            // TURYAM State optimized configuration
+            parallelToolCalls: selectedModel === 'turyam-pro',
+            strictSchemas: false,
+            seed: group === 'guru' ? 108 : undefined, // Sacred consistency for Guru mode
           } as OpenAIResponsesProviderOptions,
-          xai: {
-            ...(model === 'scira-default'
-              ? {
-                reasoningEffort: 'low',
-              }
-              : {}),
-          },
-          anthropic: {
-            ...(model === 'scira-anthropic-thinking' || model === 'scira-opus-pro'
-              ? {
-                thinking: { type: 'enabled', budgetTokens: 12000 },
-              }
-              : {}),
-          },
         },
         tools: {
-          // Stock & Financial Tools
-          stock_chart: stockChartTool,
-          currency_converter: currencyConverterTool,
-          coin_data: coinDataTool,
-          coin_data_by_contract: coinDataByContractTool,
-          coin_ohlc: coinOhlcTool,
-
-          // Search & Content Tools
-          x_search: xSearchTool,
-          web_search: webSearchTool(dataStream),
-          academic_search: academicSearchTool,
-          youtube_search: youtubeSearchTool,
-          reddit_search: redditSearchTool,
-          retrieve: retrieveTool,
-
-          // Media & Entertainment
-          movie_or_tv_search: movieTvSearchTool,
-          trending_movies: trendingMoviesTool,
-          trending_tv: trendingTvTool,
-
           // Location & Maps
           find_place_on_map: findPlaceOnMapTool,
-          nearby_places_search: nearbyPlacesSearchTool,
           get_weather_data: weatherTool,
 
           // Utility Tools
           text_translate: textTranslateTool,
           code_interpreter: codeInterpreterTool,
-          track_flight: flightTrackerTool,
           datetime: datetimeTool,
           mcp_search: mcpSearchTool,
           memory_manager: memoryManagerTool,
-          extreme_search: extremeSearchTool(dataStream),
           greeting: greetingTool,
         },
         experimental_repairToolCall: async ({ toolCall, tools, parameterSchema, error }) => {
@@ -423,7 +369,7 @@ export async function POST(req: Request) {
           const tool = tools[toolCall.toolName as keyof typeof tools];
 
           const { object: repairedArgs } = await generateObject({
-            model: scira.languageModel('scira-4o-mini'),
+            model: vivek.languageModel('vivek-4o-mini'),
             schema: tool.parameters,
             prompt: [
               `The model tried to call the tool "${toolCall.toolName}"` + ` with the following arguments:`,
@@ -467,6 +413,14 @@ export async function POST(req: Request) {
           console.log('Sources: ', event.sources);
           console.log('Usage: ', event.usage);
 
+          // Step 49-52: Record monitoring metrics
+          const processingTime = Date.now() - requestStartTime;
+          try {
+            recordRequest(processingTime, event.finishReason === 'stop', null);
+          } catch (monitoringError) {
+            console.warn('Monitoring recording failed:', monitoringError);
+          }
+
           // Only proceed if user is authenticated
           if (user?.id && event.finishReason === 'stop') {
             // FIRST: Generate and update title for new conversations (highest priority)
@@ -500,22 +454,6 @@ export async function POST(req: Request) {
               console.error('Failed to track message usage:', error);
             }
 
-            // Track extreme search usage if it was used successfully
-            if (group === 'extreme') {
-              try {
-                // Check if extreme_search tool was actually called
-                const extremeSearchUsed = event.steps?.some((step) =>
-                  step.toolCalls?.some((toolCall) => toolCall.toolName === 'extreme_search'),
-                );
-
-                if (extremeSearchUsed) {
-                  console.log('Extreme search was used successfully, incrementing count');
-                  await incrementExtremeSearchUsage({ userId: user.id });
-                }
-              } catch (error) {
-                console.error('Failed to track extreme search usage:', error);
-              }
-            }
 
             // LAST: Save assistant message (after title is generated)
             try {
@@ -551,18 +489,26 @@ export async function POST(req: Request) {
 
           // Calculate and log overall request processing time
           const requestEndTime = Date.now();
-          const processingTime = (requestEndTime - requestStartTime) / 1000;
+          const totalProcessingTime = (requestEndTime - requestStartTime) / 1000;
           console.log('--------------------------------');
-          console.log(`Total request processing time: ${processingTime.toFixed(2)} seconds`);
+          console.log(`Total request processing time: ${totalProcessingTime.toFixed(2)} seconds`);
           console.log('--------------------------------');
         },
         onError(event) {
           console.log('Error: ', event.error);
+          
+          // Step 53-56: Record error metrics
+          const processingTime = Date.now() - requestStartTime;
+          try {
+            recordRequest(processingTime, false, event.error);
+          } catch (monitoringError) {
+            console.warn('Error monitoring recording failed:', monitoringError);
+          }
+          
           // Calculate and log processing time even on error
-          const requestEndTime = Date.now();
-          const processingTime = (requestEndTime - requestStartTime) / 1000;
+          const processingTimeSeconds = processingTime / 1000;
           console.log('--------------------------------');
-          console.log(`Request processing time (with error): ${processingTime.toFixed(2)} seconds`);
+          console.log(`Request processing time (with error): ${processingTimeSeconds.toFixed(2)} seconds`);
           console.log('--------------------------------');
         },
       });

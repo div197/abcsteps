@@ -1,203 +1,205 @@
-# Scira
-
-![Scira](/app/opengraph-image.png)
-
-A minimalistic AI-powered search engine that helps you find information on the internet.
-
-🔗 **[Try Scira at scira.ai](https://scira.ai)**
-
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/zaidmukaddam/scira)
-
-## Powered By
+# ABCSteps Vivek - AI-Powered Educational Companion
 
 <div align="center">
 
-| [Vercel AI SDK](https://sdk.vercel.ai/docs) | [Exa AI](https://exa.ai) |
-|:---:|:---:|
-| <img src="/public/one.svg" alt="Vercel AI SDK" height="40" /> | <img src="/public/exa.png" alt="Exa AI" height="40" /> |
-| For AI model integration and streaming | For web search and content retrieval |
+![ABCSteps Vivek](https://img.shields.io/badge/ABCSteps-Vivek-orange?style=for-the-badge&logo=education&logoColor=white)
+![License](https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge)
+![Next.js](https://img.shields.io/badge/Next.js-15.4.2-black?style=for-the-badge&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+**🔗 Live Demo: [abcsteps.com](https://abcsteps.com)**
+
+An AI-powered educational companion that guides students through Socratic questioning, personalized memory tracking, and multilingual support for Indian languages.
 
 </div>
 
-## Special Thanks
+---
 
-<div align="center" markdown="1">
+## 🌟 Features
 
-[![Warp](https://github.com/user-attachments/assets/2bda420d-4211-4900-a37e-e3c7056d799c)](https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=scira)<br>
+### 🧘 **Guru Protocol** - Socratic Learning Method
+- Never gives direct answers, guides discovery through questions
+- Adapts to student's learning pace and style
+- Encourages critical thinking and self-discovery
 
-### **[Warp, the intelligent terminal](https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=scira)**<br>
+### 🗣️ **Multilingual Support**
+- Available in 10 Indian languages: Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, Malayalam, Punjabi, and Odia
+- Automatic language detection and response
+- Culturally relevant examples and metaphors
 
-[Available for MacOS, Linux, & Windows](https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=scira)<br>
-[Visit warp.dev to learn more](https://www.warp.dev/?utm_source=github&utm_medium=referral&utm_campaign=scira)
+### 🧠 **Smriti Protocol** - Three-Layer Memory System
+- **Gyan (ज्ञान)**: Tracks declarative knowledge and facts
+- **Bhava (भाव)**: Records learning experiences and emotions
+- **Kriya (क्रिया)**: Monitors procedural skills and techniques
 
-</div>
+### 🔱 **Trimurti AI Routing**
+- **Brahma Tier**: Fast responses for simple queries
+- **Vishnu Tier**: Balanced approach for Socratic dialogue
+- **Shiva Tier**: Deep analysis for complex problems
 
-## Features
+### 📚 **Educational Tools**
+- Interactive code interpreter for programming education
+- Mathematical visualization and graphing
+- Weather patterns for geography lessons
+- Translation tools for language learning
 
-### Core Search & Information
+## 🚀 Quick Start
 
-- **AI-powered search**: Get answers to your questions using multiple AI models including xAI's Grok, Anthropic's Claude, Google's Gemini, and OpenAI's GPT models
-- **Web search**: Search the web using Exa's API with support for multiple queries, search depths, and topics
-- **URL content retrieval**: Extract and analyze content from any URL using Exa AI with live crawling capabilities
-- **Reddit search**: Search Reddit content with time range filtering using Tavily API
-- **X (Twitter) search**: Search X posts with date ranges and specific handle filtering using xAI Live Search
-- **Extreme search**: Advanced multi-step search capability for complex queries
+### Prerequisites
+- Node.js 18+ and pnpm
+- PostgreSQL database
+- Redis instance
+- Required API keys (see Environment Setup)
 
-### Academic & Research
+### Installation
 
-- **Academic search**: Search for academic papers and research using Exa AI with abstracts and summaries
-- **YouTube search**: Find YouTube videos with detailed information, captions, and timestamps powered by Exa AI
+```bash
+# Clone the repository
+git clone https://github.com/div197/abcsteps.git
+cd abcsteps
 
-### Entertainment & Media
+# Install dependencies
+pnpm install
 
-- **Movie & TV show search**: Get detailed information about movies and TV shows using TMDB API
-- **Trending movies**: Discover trending movies with cast, ratings, and detailed information
-- **Trending TV shows**: Find popular TV shows with comprehensive metadata
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your API keys
 
-### Financial & Data Analysis
+# Run database migrations
+pnpm drizzle-kit migrate
 
-- **Stock charts**: Generate interactive stock charts with news integration using yfinance and Tavily
-- **Currency converter**: Convert between currencies with real-time exchange rates using yfinance
-- **Code interpreter**: Write and execute Python code with chart generation capabilities using Daytona sandbox
+# Start development server
+pnpm dev
+```
 
-### Location & Travel
+## 🔧 Environment Setup
 
-- **Weather information**: Get current weather and forecasts for any location using OpenWeather API
-- **Maps & geocoding**: Find places and get coordinates using Google Maps API
-- **Nearby places search**: Discover nearby restaurants, attractions, and services with Google Places API
-- **Flight tracking**: Track real-time flight information using Aviation Stack API
+Create a `.env.local` file with the following variables:
 
-### Productivity & Utilities
+```env
+# AI Model APIs
+OPENAI_API_KEY=your_key
+ANTHROPIC_API_KEY=your_key
+GOOGLE_GENERATIVE_AI_API_KEY=your_key
+OPENROUTER_API_KEY=your_key
 
-- **Text translation**: Translate text between languages using AI models
-- **Date & time**: Get current date and time in user's timezone with multiple format options
-- **Memory management**: Add and search personal memories using Mem0 AI
-- **MCP server search**: Search for Model Context Protocol servers using Smithery Registry
+# Memory System
+MEM0_API_KEY=your_key
+MEM0_ORG_ID=your_org_id
+MEM0_PROJECT_ID=your_project_id
 
-### Search Groups
+# Database
+DATABASE_URL=postgresql://...
+REDIS_URL=redis://...
 
-- **Web**: Search across the entire internet powered by Tavily
-- **Memory**: Your personal memory companion (requires authentication)
-- **Analysis**: Code execution, stock charts, and currency conversion
-- **Chat**: Direct conversation with AI models
-- **X**: Search X (Twitter) posts
-- **Reddit**: Search Reddit posts
-- **Academic**: Search academic papers powered by Exa
-- **YouTube**: Search YouTube videos powered by Exa
-- **Extreme**: Deep research with multiple sources and analysis
+# Authentication
+BETTER_AUTH_SECRET=your_secret
+GITHUB_CLIENT_ID=your_id
+GITHUB_CLIENT_SECRET=your_secret
+GOOGLE_CLIENT_ID=your_id
+GOOGLE_CLIENT_SECRET=your_secret
 
-## LLM Models Supported
+# Educational Tools
+DAYTONA_API_KEY=your_key  # Code execution
+OPENWEATHER_API_KEY=your_key  # Weather education
+GOOGLE_MAPS_API_KEY=your_key  # Geography
+```
 
-- **xAI**: Grok 3, Grok 3 Mini, Grok 2 Vision
-- **Google**: Gemini 2.5 Flash (Preview), Gemini 2.5 Pro (Preview)
-- **Anthropic**: Claude 4 Sonnet, Claude 4 Opus (with thinking capabilities)
-- **OpenAI**: GPT-4o, o4-mini, o3 (with reasoning capabilities)
-- **Groq**: Qwen QwQ 32B, Qwen 3 32B, Meta's Llama 4 Maverick
+## 🏗️ Architecture
 
-## Built with
+### Tech Stack
+- **Framework**: Next.js 15.4 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Database**: PostgreSQL with Drizzle ORM
+- **Caching**: Redis
+- **Authentication**: Better Auth
+- **AI Integration**: Vercel AI SDK
+- **Memory**: Mem0 AI
 
-- [Next.js](https://nextjs.org/) - React framework
-- [Tailwind CSS](https://tailwindcss.com/) - Styling
-- [Vercel AI SDK](https://sdk.vercel.ai/docs) - AI model integration
-- [Shadcn/UI](https://ui.shadcn.com/) - UI components
-- [Exa.AI](https://exa.ai/) - Web search and content retrieval
-- [Tavily](https://tavily.com/) - Search grounding for reddit search
-- [OpenWeather](https://openweathermap.org/) - Weather data
-- [Daytona](https://daytona.io/) - Code execution sandbox
-- [Google Maps](https://developers.google.com/maps) - Location services
-- [Aviation Stack](https://aviationstack.com/) - Flight tracking
-- [TMDB](https://www.themoviedb.org/) - Movie and TV data
-- [Mem0](https://mem0.ai/) - Memory management
-- [Better Auth](https://github.com/better-auth/better-auth) - Authentication
-- [Drizzle ORM](https://orm.drizzle.team/) - Database management
+### Project Structure
+```
+abcsteps/
+├── app/              # Next.js app directory
+├── components/       # React components
+├── lib/             
+│   ├── tools/       # Educational tool implementations
+│   ├── db/          # Database schema and queries
+│   └── ...          # Utilities and helpers
+├── ai/              # AI provider configurations
+└── hooks/           # Custom React hooks
+```
 
-### Deploy your own
+## 🌐 Deployment
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fzaidmukaddam%2Fscira&env=XAI_API_KEY,OPENAI_API_KEY,ANTHROPIC_API_KEY,GROQ_API_KEY,GOOGLE_GENERATIVE_AI_API_KEY,DAYTONA_API_KEY,DATABASE_URL,BETTER_AUTH_SECRET,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,TWITTER_CLIENT_ID,TWITTER_CLIENT_SECRET,REDIS_URL,ELEVENLABS_API_KEY,TAVILY_API_KEY,EXA_API_KEY,TMDB_API_KEY,YT_ENDPOINT,FIRECRAWL_API_KEY,OPENWEATHER_API_KEY,GOOGLE_MAPS_API_KEY,MAPBOX_ACCESS_TOKEN,AVIATION_STACK_API_KEY,CRON_SECRET,BLOB_READ_WRITE_TOKEN,MEM0_API_KEY,MEM0_ORG_ID,MEM0_PROJECT_ID,SMITHERY_API_KEY,NEXT_PUBLIC_MAPBOX_TOKEN,NEXT_PUBLIC_POSTHOG_KEY,NEXT_PUBLIC_POSTHOG_HOST,NEXT_PUBLIC_SCIRA_PUBLIC_API_KEY,SCIRA_API_KEY&envDescription=API%20keys%20and%20configuration%20required%20for%20Scira%20to%20function)
+### One-Command Deployment
 
-## Set Scira as your default search engine
+ABCSteps Vivek supports instant deployment on multiple platforms:
 
-1. **Open the Chrome browser settings**:
+```bash
+# Vercel (Recommended)
+pnpm deploy:vercel
 
-   - Click on the three vertical dots in the upper right corner of the browser.
-   - Select "Settings" from the dropdown menu.
+# Railway
+pnpm deploy:railway
 
-2. **Go to the search engine settings**:
+# Render
+pnpm deploy:render
 
-   - In the left sidebar, click on "Search engine."
-   - Then select "Manage search engines and site search."
+# Netlify
+pnpm deploy:netlify
 
-3. **Add a new search engine**:
+# Fly.io
+pnpm deploy:fly
+```
 
-   - Click on "Add" next to "Site search."
+### Manual Deployment
 
-4. **Set the search engine name**:
+The platform uses standalone Next.js builds for optimal performance:
 
-   - Enter `Scira` in the "Search engine" field.
+```bash
+# Build for production
+pnpm build
 
-5. **Set the search engine URL**:
+# Start production server
+pnpm start
+```
 
-   - Enter `https://scira.ai?q=%s` in the "URL with %s in place of query" field.
+## 🤝 Contributing
 
-6. **Set the search engine shortcut**:
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
-   - Enter `sh` in the "Shortcut" field.
+### Development Workflow
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-7. **Set Default**:
-   - Click on the three dots next to the search engine you just added.
-   - Select "Make default" from the dropdown menu.
-
-After completing these steps, you should be able to use Scira as your default search engine in Chrome.
-
-### Local development
-
-#### Run via Docker
-
-The application can be run using Docker in two ways:
-
-##### Using Docker Compose (Recommended)
-
-1. Make sure you have Docker and Docker Compose installed on your system
-2. Create a `.env` file based on `.env.example` with your API keys
-3. Run the following command in the project root:
-   ```bash
-   docker compose up
-   ```
-4. The application will be available at `http://localhost:3000`
-
-##### Using Docker Directly
-
-1. Create a `.env` file based on `.env.example` with your API keys
-2. Build the Docker image:
-   ```bash
-   docker build -t scira.app .
-   ```
-3. Run the container:
-   ```bash
-   docker run --env-file .env -p 3000:3000 scira.app
-   ```
-
-The application uses a multi-stage build process to minimize the final image size and implements security best practices. The production image runs on Node.js LTS with Alpine Linux for a minimal footprint.
-
-#### Run with Node.js
-
-To run the application locally without Docker:
-
-1. Sign up for accounts with the required AI providers:
-   - OpenAI (required)
-   - Anthropic (required)
-   - Exa (required for web search feature)
-2. Copy `.env.example` to `.env.local` and fill in your API keys
-3. Install dependencies:
-   ```bash
-   pnpm install
-   ```
-4. Start the development server:
-   ```bash
-   pnpm dev
-   ```
-5. Open `http://localhost:3000` in your browser
-
-# License
+## 📄 License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Orange Network Foundation** ([www.orangenetwork.foundation](https://www.orangenetwork.foundation)) - For concept and resource support
+- **Vercel** - For hosting and development tools
+- **Anthropic, OpenAI, Google** - For AI model access
+- **Open Source Community** - For the amazing tools and libraries
+
+## 📧 Contact
+
+- **Website**: [abcsteps.com](https://abcsteps.com)
+- **Email**: divyanshu@abcsteps.com
+- **GitHub**: [@div197](https://github.com/div197)
+
+---
+
+<div align="center">
+
+**Built with ❤️ for Indian Students**
+
+*Empowering education through AI-guided learning*
+
+</div>

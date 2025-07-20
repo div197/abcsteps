@@ -51,17 +51,17 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/ph',
-        destination: 'https://www.producthunt.com/posts/scira',
+        destination: 'https://www.producthunt.com/posts/abcsteps-vivek',
         permanent: true,
       },
       {
         source: '/raycast',
-        destination: 'https://www.raycast.com/zaidmukaddam/scira',
+        destination: 'https://www.raycast.com/div197/abcsteps-vivek',
         permanent: true,
       },
       {
         source: '/plst',
-        destination: 'https://peerlist.io/zaidmukaddam/project/scira-ai-20',
+        destination: 'https://peerlist.io/div197/project/abcsteps-vivek',
         permanent: true,
       },
     ];
@@ -140,20 +140,6 @@ const nextConfig: NextConfig = {
         hostname: 'www.uneed.best',
         port: '',
         pathname: '**',
-      },
-      // image.tmdb.org
-      {
-        protocol: 'https',
-        hostname: 'image.tmdb.org',
-        port: '',
-        pathname: '/t/p/original/**',
-      },
-      // image.tmdb.org
-      {
-        protocol: 'https',
-        hostname: 'image.tmdb.org',
-        port: '',
-        pathname: '/**',
       },
     ],
     // Add additional settings for better image loading

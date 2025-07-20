@@ -30,23 +30,20 @@ import {
   ChevronDown,
   Cloud,
   Copy,
-  DollarSign,
   ExternalLink,
   Film,
   Globe,
   Loader2,
   MapPin,
   Pause,
-  Plane,
   Play as PlayIcon,
   Server,
   TextIcon,
-  TrendingUpIcon,
   Tv,
   XCircle,
   YoutubeIcon,
 } from 'lucide-react';
-import { Memory, Clock as PhosphorClock, RedditLogo, RoadHorizon, XLogo } from '@phosphor-icons/react';
+import { Memory, Clock as PhosphorClock, RoadHorizon } from '@phosphor-icons/react';
 
 // Type definitions for YouTube components
 interface VideoDetails {
@@ -75,9 +72,6 @@ interface YouTubeSearchResponse {
 }
 
 // Lazy load heavy components
-const FlightTracker = lazy(() =>
-  import('@/components/flight-tracker').then((module) => ({ default: module.FlightTracker })),
-);
 const InteractiveChart = lazy(() => import('@/components/interactive-charts'));
 const MapComponent = lazy(() =>
   import('@/components/map-components').then((module) => ({ default: module.MapComponent })),
@@ -85,34 +79,10 @@ const MapComponent = lazy(() =>
 const MapContainer = lazy(() =>
   import('@/components/map-components').then((module) => ({ default: module.MapContainer })),
 );
-const TMDBResult = lazy(() => import('@/components/movie-info'));
 const MultiSearch = lazy(() => import('@/components/multi-search'));
-const NearbySearchMapView = lazy(() => import('@/components/nearby-search-map-view'));
-const TrendingResults = lazy(() => import('@/components/trending-tv-movies-results'));
 const AcademicPapersCard = lazy(() => import('@/components/academic-papers'));
 const WeatherChart = lazy(() => import('@/components/weather-chart'));
 const MCPServerList = lazy(() => import('@/components/mcp-server-list'));
-const RedditSearch = lazy(() => import('@/components/reddit-search'));
-const XSearch = lazy(() => import('@/components/x-search'));
-const ExtremeSearch = lazy(() =>
-  import('@/components/extreme-search').then((module) => ({ default: module.ExtremeSearch })),
-);
-const CryptoCoinsData = lazy(() =>
-  import('@/components/crypto-coin-data').then((module) => ({ default: module.CoinData })),
-);
-const CurrencyConverter = lazy(() =>
-  import('@/components/currency_conv').then((module) => ({ default: module.CurrencyConverter })),
-);
-const InteractiveStockChart = lazy(() => import('@/components/interactive-stock-chart'));
-const CryptoChart = lazy(() =>
-  import('@/components/crypto-charts').then((module) => ({ default: module.CryptoChart })),
-);
-const OnChainCryptoComponents = lazy(() =>
-  import('@/components/onchain-crypto-components').then((module) => ({ default: module.OnChainTokenPrice })),
-);
-const CryptoTickers = lazy(() =>
-  import('@/components/crypto-charts').then((module) => ({ default: module.CryptoTickers })),
-);
 
 // Loading component for lazy-loaded components
 const ComponentLoader = () => (
@@ -210,59 +180,6 @@ const SearchLoadingState = ({
 };
 
 // Dedicated nearby search skeleton loading state
-const NearbySearchSkeleton = ({ type }: { type: string }) => {
-  return (
-    <div className="relative w-full h-[70vh] bg-white dark:bg-neutral-900 rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800 my-4">
-      {/* Header skeleton */}
-      <div className="absolute top-4 left-4 z-20 flex gap-2">
-        <div className="h-6 w-12 bg-neutral-200 dark:bg-neutral-700 rounded-full animate-pulse" />
-        <div className="h-6 w-24 bg-neutral-200 dark:bg-neutral-700 rounded-full animate-pulse" />
-      </div>
-
-      {/* View toggle skeleton */}
-      <div className="absolute top-4 right-4 z-20 flex rounded-full bg-white dark:bg-black border border-neutral-200 dark:border-neutral-700 p-0.5 shadow-lg">
-        <div className="px-4 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 animate-pulse">
-          <div className="h-4 w-8 bg-neutral-200 dark:bg-neutral-700 rounded" />
-        </div>
-        <div className="px-4 py-1 rounded-full">
-          <div className="h-4 w-8 bg-neutral-200 dark:bg-neutral-700 rounded animate-pulse" />
-        </div>
-      </div>
-
-      {/* Map skeleton */}
-      <div className="w-full h-full bg-neutral-100 dark:bg-neutral-800 relative animate-pulse">
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-200 dark:from-neutral-700 to-transparent opacity-50" />
-
-        {/* Mock markers */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="w-6 h-6 bg-blue-400 rounded-full opacity-60 animate-pulse"></div>
-        </div>
-        <div className="absolute top-1/3 right-1/3 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="w-6 h-6 bg-blue-400 rounded-full opacity-40 animate-pulse"></div>
-        </div>
-        <div className="absolute bottom-1/3 left-1/4 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="w-6 h-6 bg-blue-400 rounded-full opacity-50 animate-pulse"></div>
-        </div>
-
-        {/* Loading text overlay */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg px-4 py-2 flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-blue-500 animate-pulse" />
-            <TextShimmer className="text-sm font-medium" duration={2}>
-              {`Finding nearby ${type}...`}
-            </TextShimmer>
-          </div>
-        </div>
-
-        {/* Map controls skeleton */}
-        <div className="absolute bottom-4 right-4 space-y-2">
-          <div className="w-8 h-8 bg-neutral-300 dark:bg-neutral-700 rounded shadow-sm animate-pulse" />
-          <div className="w-8 h-8 bg-neutral-300 dark:bg-neutral-700 rounded shadow-sm animate-pulse" />
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const YouTubeCard: React.FC<YouTubeCardProps> = ({ video, index }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -810,27 +727,6 @@ const ToolInvocationListView = memo(
           );
         }
 
-        if (toolInvocation.toolName === 'movie_or_tv_search') {
-          if (!result) {
-            return <SearchLoadingState icon={Film} text="Discovering entertainment content..." color="violet" />;
-          }
-
-          return <TMDBResult result={result} />;
-        }
-
-        if (toolInvocation.toolName === 'trending_movies') {
-          if (!result) {
-            return <SearchLoadingState icon={Film} text="Loading trending movies..." color="blue" />;
-          }
-          return <TrendingResults result={result} type="movie" />;
-        }
-
-        if (toolInvocation.toolName === 'trending_tv') {
-          if (!result) {
-            return <SearchLoadingState icon={Tv} text="Loading trending TV shows..." color="blue" />;
-          }
-          return <TrendingResults result={result} type="tv" />;
-        }
 
         if (toolInvocation.toolName === 'youtube_search') {
           if (!result) {
@@ -920,70 +816,6 @@ const ToolInvocationListView = memo(
           return <AcademicPapersCard results={result.results} />;
         }
 
-        if (toolInvocation.toolName === 'nearby_places_search') {
-          if (!result) {
-            return <NearbySearchSkeleton type={args.type} />;
-          }
-
-          // Handle error responses
-          if (!result.success) {
-            return (
-              <Card className="w-full my-4 p-4 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950">
-                <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
-                  <MapPin className="h-5 w-5" />
-                  <span className="font-medium">Nearby search failed</span>
-                </div>
-                <p className="text-sm text-red-500 dark:text-red-300 mt-1">{result.error}</p>
-              </Card>
-            );
-          }
-
-          const { places, center } = result;
-          if (!places || places.length === 0) {
-            return (
-              <Card className="w-full my-4 p-4 border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-950">
-                <div className="flex items-center gap-2 text-yellow-600 dark:text-yellow-400">
-                  <MapPin className="h-5 w-5" />
-                  <span className="font-medium">No nearby {args.type} found</span>
-                </div>
-                <p className="text-sm text-yellow-500 dark:text-yellow-300 mt-1">
-                  Try expanding the search radius or searching in a different area.
-                </p>
-              </Card>
-            );
-          }
-
-          // Transform places to match the NearbySearchMapView expected format
-          const transformedPlaces = places.map((place: any) => ({
-            name: place.name,
-            location: place.location,
-            place_id: place.place_id,
-            vicinity: place.formatted_address,
-            rating: place.rating,
-            reviews_count: place.reviews_count,
-            price_level: place.price_level,
-            photos: place.photos,
-            is_closed: !place.is_open,
-            type: place.types?.[0]?.replace(/_/g, ' '),
-            source: place.source,
-            phone: place.phone,
-            website: place.website,
-            hours: place.opening_hours,
-            distance: place.distance,
-          }));
-
-          return (
-            <div className="my-4">
-              <NearbySearchMapView
-                center={center}
-                places={transformedPlaces}
-                type={result.type}
-                query={result.query}
-                searchRadius={result.radius}
-              />
-            </div>
-          );
-        }
 
         if (toolInvocation.toolName === 'get_weather_data') {
           if (!result) {
@@ -1043,47 +875,7 @@ const ToolInvocationListView = memo(
           return <WeatherChart result={result} />;
         }
 
-        if (toolInvocation.toolName === 'currency_converter') {
-          return <CurrencyConverter toolInvocation={toolInvocation} result={result} />;
-        }
 
-        if (toolInvocation.toolName === 'stock_chart') {
-          return (
-            <div className="flex flex-col gap-3 w-full mt-4">
-              {/* Only show the badge when loading, hide it after results are loaded */}
-              {!result && (
-                <Badge
-                  variant="secondary"
-                  className={cn(
-                    'w-fit flex items-center gap-3 px-4 py-2 rounded-full transition-colors duration-200',
-                    'bg-blue-200 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400',
-                  )}
-                >
-                  <TrendingUpIcon className="h-4 w-4" />
-                  <span className="font-medium">{args.title}</span>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                </Badge>
-              )}
-
-              {result?.chart && (
-                <div className="w-full">
-                  <InteractiveStockChart
-                    title={args.title}
-                    chart={{
-                      ...result.chart,
-                      x_scale: 'datetime',
-                    }}
-                    data={result.chart.elements}
-                    stock_symbols={args.stock_symbols}
-                    currency_symbols={args.currency_symbols || args.stock_symbols.map(() => 'USD')}
-                    interval={args.interval}
-                    news_results={result.news_results}
-                  />
-                </div>
-              )}
-            </div>
-          );
-        }
 
         if (toolInvocation.toolName === 'code_interpreter') {
           return (
@@ -1108,13 +900,6 @@ const ToolInvocationListView = memo(
           );
         }
 
-        if (toolInvocation.toolName === 'extreme_search') {
-          return (
-            <Suspense fallback={<ComponentLoader />}>
-              <ExtremeSearch toolInvocation={toolInvocation} annotations={annotations} />
-            </Suspense>
-          );
-        }
 
         if (toolInvocation.toolName === 'web_search') {
           return (
@@ -1374,45 +1159,6 @@ const ToolInvocationListView = memo(
           return <TranslationTool toolInvocation={toolInvocation} result={result} />;
         }
 
-        if (toolInvocation.toolName === 'track_flight') {
-          if (!result) {
-            return (
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-2">
-                  <Plane className="h-5 w-5 text-neutral-700 dark:text-neutral-300 animate-pulse" />
-                  <span className="text-neutral-700 dark:text-neutral-300 text-lg">
-                    Tracking flight {args.carrierCode}
-                    {args.flightNumber}...
-                  </span>
-                </div>
-                <div className="flex space-x-1">
-                  {[0, 1, 2].map((index) => (
-                    <motion.div
-                      key={index}
-                      className="w-2 h-2 bg-neutral-400 dark:bg-neutral-600 rounded-full"
-                      initial={{ opacity: 0.3 }}
-                      animate={{ opacity: 1 }}
-                      transition={{
-                        repeat: Infinity,
-                        duration: 0.8,
-                        delay: index * 0.2,
-                        repeatType: 'reverse',
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-            );
-          }
-
-          return (
-            <div className="my-4">
-              <Suspense fallback={<ComponentLoader />}>
-                <FlightTracker data={result} />
-              </Suspense>
-            </div>
-          );
-        }
 
         if (toolInvocation.toolName === 'datetime') {
           if (!result) {
@@ -1586,120 +1332,7 @@ const ToolInvocationListView = memo(
           );
         }
 
-        if (toolInvocation.toolName === 'reddit_search') {
-          if (!result) {
-            return <SearchLoadingState icon={RedditLogo} text="Searching Reddit..." color="orange" />;
-          }
 
-          return (
-            <Suspense fallback={<ComponentLoader />}>
-              <RedditSearch result={result} args={args} />
-            </Suspense>
-          );
-        }
-
-        if (toolInvocation.toolName === 'x_search') {
-          if (!result) {
-            return <SearchLoadingState icon={XLogo} text="Searching X (Twitter)..." color="gray" />;
-          }
-
-          return (
-            <Suspense fallback={<ComponentLoader />}>
-              <XSearch result={result} args={args} />
-            </Suspense>
-          );
-        }
-
-        if (toolInvocation.toolName === 'coin_tickers') {
-          if (!result) {
-            return <SearchLoadingState icon={DollarSign} text="Fetching crypto ticker data..." color="orange" />;
-          }
-
-          return (
-            <Suspense fallback={<ComponentLoader />}>
-              <CryptoTickers result={result} coinId={args.coinId} />
-            </Suspense>
-          );
-        }
-
-        if (toolInvocation.toolName === 'coin_chart_range') {
-          if (!result) {
-            return <SearchLoadingState icon={TrendingUpIcon} text="Loading crypto price chart..." color="blue" />;
-          }
-
-          return (
-            <Suspense fallback={<ComponentLoader />}>
-              <CryptoChart result={result} coinId={args.coinId} chartType="candlestick" />
-            </Suspense>
-          );
-        }
-
-        if (toolInvocation.toolName === 'coin_ohlc') {
-          if (!result) {
-            return <SearchLoadingState icon={TrendingUpIcon} text="Loading OHLC candlestick data..." color="green" />;
-          }
-
-          // Enhanced result with coin data integrated
-          const enhancedResult = {
-            ...result,
-            // Add essential coin details to chart result
-            coinData: result.coinData,
-          };
-
-          return (
-            <Suspense fallback={<ComponentLoader />}>
-              <CryptoChart result={enhancedResult} coinId={args.coinId} chartType="candlestick" />
-            </Suspense>
-          );
-        }
-
-        if (toolInvocation.toolName === 'contract_chart') {
-          if (!result) {
-            return <SearchLoadingState icon={TrendingUpIcon} text="Loading contract chart data..." color="violet" />;
-          }
-
-          return (
-            <Suspense fallback={<ComponentLoader />}>
-              <CryptoChart result={result} coinId={args.contractAddress} chartType="line" />
-            </Suspense>
-          );
-        }
-
-        if (toolInvocation.toolName === 'coin_data') {
-          if (!result) {
-            return <SearchLoadingState icon={DollarSign} text="Fetching comprehensive coin data..." color="blue" />;
-          }
-
-          return (
-            <Suspense fallback={<ComponentLoader />}>
-              <CryptoCoinsData result={result} coinId={args.coinId} />
-            </Suspense>
-          );
-        }
-
-        if (toolInvocation.toolName === 'coin_data_by_contract') {
-          if (!result) {
-            return <SearchLoadingState icon={DollarSign} text="Fetching token data by contract..." color="violet" />;
-          }
-
-          return (
-            <Suspense fallback={<ComponentLoader />}>
-              <CryptoCoinsData result={result} contractAddress={args.contractAddress} />
-            </Suspense>
-          );
-        }
-
-        if (toolInvocation.toolName === 'onchain_token_price') {
-          if (!result) {
-            return <SearchLoadingState icon={DollarSign} text="Fetching onchain token prices..." color="blue" />;
-          }
-
-          return (
-            <Suspense fallback={<ComponentLoader />}>
-              <OnChainCryptoComponents result={result} network={args.network} addresses={args.addresses} />
-            </Suspense>
-          );
-        }
 
         if (toolInvocation.toolName === 'greeting') {
           if (!result) {

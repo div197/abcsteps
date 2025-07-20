@@ -16,7 +16,6 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 import {
   getUserMessageCount,
   getSubDetails,
-  getExtremeSearchUsageCount,
   getHistoricalUsage,
   getCustomInstructions,
   saveCustomInstructions,
@@ -223,15 +222,14 @@ function UsageSection({ user }: any) {
   } = useQuery({
     queryKey: ['usageData'],
     queryFn: async () => {
-      const [searchCount, extremeSearchCount, subscriptionDetails] = await Promise.all([
+      const [searchCount, subscriptionDetails] = await Promise.all([
         getUserMessageCount(),
-        getExtremeSearchUsageCount(),
         getSubDetails(),
       ]);
 
       return {
         searchCount,
-        extremeSearchCount,
+        extremeSearchCount: { count: 0, error: null }, // Placeholder
         subscriptionDetails,
       };
     },

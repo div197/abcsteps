@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { User } from '@/lib/db/schema';
-import { LinkedinLogo, RedditLogo, XLogo } from '@phosphor-icons/react';
+import { LinkedinLogo } from '@phosphor-icons/react';
 import { ClassicLoader } from '@/components/ui/loading';
 import { useRouter } from 'next/navigation';
 
@@ -75,7 +75,7 @@ const Navbar = memo(
 
       if (!chatId) return;
 
-      const url = `https://scira.ai/search/${chatId}`;
+      const url = `https://abcsteps.com/search/${chatId}`;
       navigator.clipboard.writeText(url);
       setCopied(true);
       toast.success('Link copied to clipboard');
@@ -84,7 +84,7 @@ const Navbar = memo(
     };
 
     // Generate the share URL
-    const shareUrl = chatId ? `https://scira.ai/search/${chatId}` : '';
+    const shareUrl = chatId ? `https://abcsteps.com/search/${chatId}` : '';
 
     // Social media share handlers
     const handleShareLinkedIn = (e: React.MouseEvent) => {
@@ -93,17 +93,6 @@ const Navbar = memo(
       window.open(linkedInUrl, '_blank', 'noopener,noreferrer');
     };
 
-    const handleShareTwitter = (e: React.MouseEvent) => {
-      e.preventDefault();
-      const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`;
-      window.open(twitterUrl, '_blank', 'noopener,noreferrer');
-    };
-
-    const handleShareReddit = (e: React.MouseEvent) => {
-      e.preventDefault();
-      const redditUrl = `https://www.reddit.com/submit?url=${encodeURIComponent(shareUrl)}`;
-      window.open(redditUrl, '_blank', 'noopener,noreferrer');
-    };
 
     const handleVisibilityChange = async (newVisibility: VisibilityType) => {
       setIsChangingVisibility(true);
@@ -282,24 +271,6 @@ const Navbar = memo(
                                 title="Share on LinkedIn"
                               >
                                 <LinkedinLogo size={16} />
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="size-8"
-                                onClick={handleShareTwitter}
-                                title="Share on X (Twitter)"
-                              >
-                                <XLogo size={16} />
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="size-8"
-                                onClick={handleShareReddit}
-                                title="Share on Reddit"
-                              >
-                                <RedditLogo size={16} />
                               </Button>
                             </div>
                           </footer>

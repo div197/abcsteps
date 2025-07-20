@@ -1,0 +1,62 @@
+
+> abcsteps-vivek@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.4.2-canary.8 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://10.0.2.136:3000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ useCache
+     · staleTimes
+     · serverActions
+     · ...
+
+ ✓ Starting...
+ ○ Compiling middleware ...
+ ✓ Compiled middleware in 929ms
+ ✓ Ready in 2.5s
+Pathname:  /
+ ○ Compiling / ...
+Pathname:  /
+ ✓ Compiled / in 70.1s
+ ⨯ Error: POLAR_WEBHOOK_SECRET environment variable is required
+    at <unknown> (lib/auth.ts:132:21)
+    at [project]/lib/auth.ts [app-rsc] (ecmascript) (lib/auth.ts:133:14)
+    at [project]/lib/auth-utils.ts [app-rsc] (ecmascript) (lib/auth-utils.ts:1:1)
+    at [project]/app/actions.ts [app-rsc] (ecmascript) (app/actions.ts:8:1)
+    at [project]/.next-internal/server/app/(search)/page/actions.js { ACTIONS_MODULE0 => "[project]/app/actions.ts [app-rsc] (ecmascript)", ACTIONS_MODULE1 => "[project]/lib/memory-actions.ts [app-rsc] (ecmascript)" } [app-rsc] (server actions loader, ecmascript) <module evaluation> (.next/server/chunks/ssr/[root-of-the-server]__0cb5cfe8._.js:3245:140)
+    at [project]/.next-internal/server/app/(search)/page/actions.js { ACTIONS_MODULE0 => "[project]/app/actions.ts [app-rsc] (ecmascript)", ACTIONS_MODULE1 => "[project]/lib/memory-actions.ts [app-rsc] (ecmascript)" } [app-rsc] (server actions loader, ecmascript) (.next/server/chunks/ssr/[root-of-the-server]__0cb5cfe8._.js:3303:491)
+    at Object.<anonymous> (.next/server/app/(search)/page.js:47:9)
+  130 |             process.env.POLAR_WEBHOOK_SECRET ||
+  131 |             (() => {
+> 132 |               throw new Error('POLAR_WEBHOOK_SECRET environment variable is required');
+      |                     ^
+  133 |             })(),
+  134 |           onPayload: async ({ data, type }) => {
+  135 |             if ( {
+  page: '/'
+}
+ ⨯ Error: POLAR_WEBHOOK_SECRET environment variable is required
+    at <unknown> (lib/auth.ts:132:21)
+    at [project]/lib/auth.ts [app-rsc] (ecmascript) (lib/auth.ts:133:14)
+    at [project]/lib/auth-utils.ts [app-rsc] (ecmascript) (lib/auth-utils.ts:1:1)
+    at [project]/app/actions.ts [app-rsc] (ecmascript) (app/actions.ts:8:1)
+    at [project]/.next-internal/server/app/(search)/page/actions.js { ACTIONS_MODULE0 => "[project]/app/actions.ts [app-rsc] (ecmascript)", ACTIONS_MODULE1 => "[project]/lib/memory-actions.ts [app-rsc] (ecmascript)" } [app-rsc] (server actions loader, ecmascript) <module evaluation> (.next/server/chunks/ssr/[root-of-the-server]__0cb5cfe8._.js:3245:140)
+    at [project]/.next-internal/server/app/(search)/page/actions.js { ACTIONS_MODULE0 => "[project]/app/actions.ts [app-rsc] (ecmascript)", ACTIONS_MODULE1 => "[project]/lib/memory-actions.ts [app-rsc] (ecmascript)" } [app-rsc] (server actions loader, ecmascript) (.next/server/chunks/ssr/[root-of-the-server]__0cb5cfe8._.js:3303:491)
+    at Object.<anonymous> (.next/server/app/(search)/page.js:47:9)
+  130 |             process.env.POLAR_WEBHOOK_SECRET ||
+  131 |             (() => {
+> 132 |               throw new Error('POLAR_WEBHOOK_SECRET environment variable is required');
+      |                     ^
+  133 |             })(),
+  134 |           onPayload: async ({ data, type }) => {
+  135 |             if ( {
+  page: '/'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 3.8s
+ GET / 500 in 76654ms
+ GET / 500 in 59886ms
+   Reload env: .env.local
+[?25h

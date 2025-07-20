@@ -119,21 +119,6 @@ export const subscription = pgTable('subscription', {
   userId: text('userId').references(() => user.id),
 });
 
-// Extreme search usage tracking table
-export const extremeSearchUsage = pgTable('extreme_search_usage', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => generateId()),
-  userId: text('user_id')
-    .notNull()
-    .references(() => user.id, { onDelete: 'cascade' }),
-  searchCount: integer('search_count').notNull().default(0),
-  date: timestamp('date').notNull().defaultNow(),
-  resetAt: timestamp('reset_at').notNull(),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
-});
-
 // Message usage tracking table
 export const messageUsage = pgTable('message_usage', {
   id: text('id')
@@ -170,6 +155,5 @@ export type Chat = InferSelectModel<typeof chat>;
 export type Message = InferSelectModel<typeof message>;
 export type Stream = InferSelectModel<typeof stream>;
 export type Subscription = InferSelectModel<typeof subscription>;
-export type ExtremeSearchUsage = InferSelectModel<typeof extremeSearchUsage>;
 export type MessageUsage = InferSelectModel<typeof messageUsage>;
 export type CustomInstructions = InferSelectModel<typeof customInstructions>;

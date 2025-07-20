@@ -1,0 +1,19 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "regions": ["bom1"],
+  "functions": {
+    "app/api/search/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/transcribe/route.ts": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "NEXT_PUBLIC_SITE_NAME": "ABCSteps - Vivek Learning Platform"
+  }
+}

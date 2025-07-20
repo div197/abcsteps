@@ -1,0 +1,37 @@
+name: 🕉️ Divine Auto-Deployment
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: 🔱 Deploy to Cloud Platforms
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📿 Checkout sacred code
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        
+    - name: 📦 Install dependencies
+      run: npm ci
+      
+    - name: 🏗️ Build application
+      run: npm run build
+      env:
+        NEXT_PUBLIC_SITE_NAME: ABCSteps Vivek Platform
+        
+    - name: 🚀 Deploy to Vercel
+      if: ${{ secrets.VERCEL_TOKEN }}
+      run: |
+        npm i -g vercel
+        vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+        
+    - name: 🙏 Deployment complete
+      run: echo "॥ विद्या ददाति विनयं ॥"

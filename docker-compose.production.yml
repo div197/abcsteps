@@ -1,0 +1,198 @@
+version: '3.8'
+
+# 🕉️ Divine Container Orchestration - Production Grade
+services:
+  # 🔱 PostgreSQL Database with High Availability
+  postgres:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-vivek_prod}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-abcsteps_vivek}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.utf8"
+      # Performance tuning
+      POSTGRES_MAX_CONNECTIONS: 200
+      POSTGRES_SHARED_BUFFERS: 256MB
+      POSTGRES_EFFECTIVE_CACHE_SIZE: 1GB
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-vivek_prod}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - abcsteps_network
+
+  # 🚀 Redis for Caching & Sessions
+  redis:
+    image: redis:7-alpine
+    restart: always
+    command: >
+      redis-server
+      --appendonly yes
+      --appendfsync everysec
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+      --requirepass ${REDIS_PASSWORD}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--pass", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - abcsteps_network
+
+  # 🌟 ABCSteps Vivek Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+      args:
+        - NODE_ENV=production
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      # Application
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+      
+      # Database
+      - DATABASE_URL=postgresql://${DB_USER:-vivek_prod}:${DB_PASSWORD}@postgres:5432/${DB_NAME:-abcsteps_vivek}?schema=public
+      
+      # Redis
+      - REDIS_URL=redis://default:${REDIS_PASSWORD}@redis:6379
+      
+      # Authentication
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      
+      # AI Provider
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      
+      # Monitoring
+      - SENTRY_DSN=${SENTRY_DSN}
+      - POSTHOG_KEY=${POSTHOG_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - abcsteps_network
+    volumes:
+      # Mount for dynamic content (if needed)
+      - app_uploads:/app/uploads
+
+  # 📊 Monitoring Stack - Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      - abcsteps_network
+
+  # 📈 Grafana for Visualization
+  grafana:
+    image: grafana/grafana:latest
+    restart: always
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana-dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml:ro
+    depends_on:
+      - prometheus
+    networks:
+      - abcsteps_network
+
+  # 🔄 Nginx Reverse Proxy & Load Balancer
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_cache:/var/cache/nginx
+    depends_on:
+      - app
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - abcsteps_network
+
+  # 🛡️ Security Scanner (runs periodically)
+  security-scanner:
+    build:
+      context: .
+      dockerfile: Dockerfile.security
+    restart: "no"
+    environment:
+      - SCAN_INTERVAL=${SCAN_INTERVAL:-86400} # Daily
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - security_reports:/reports
+    networks:
+      - abcsteps_network
+
+# 🌐 Networks
+networks:
+  abcsteps_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# 💾 Volumes
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  app_uploads:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  nginx_cache:
+    driver: local
+  security_reports:
+    driver: local
